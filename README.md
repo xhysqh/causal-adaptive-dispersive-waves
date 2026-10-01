@@ -56,14 +56,14 @@ python scripts/run_cmame_v2_power_law_showcase.py --mode full --device cpu
 ```
 
 ## Methodological boundary
-- Estimator fitting and calibration are performed using only mCH and BO
-- KdV, ILW and power‑law equations are targets for frozen‑transfer testing
-- Estimator weights, normalization, calibration quantities and selection rule remain fixed during transfer
-- Post‑hoc reference solutions are used only for evaluation and do not feed into the online controller
-- Coarsening requires projection, invariant and verification checks
+- Estimator fitting and calibration are performed using only mCH and BO;
+- KdV, ILW and power‑law equations are targets for frozen‑transfer testing;
+- Estimator weights, normalization, calibration quantities and selection rule remain fixed during transfer;
+- Post‑hoc reference solutions serve solely for evaluation purposes and are not fed into the online controller;
+- Coarsening requires projection, invariant and verification checks.
 
 ## Contact
 hsycipher@hotmail.com; 
-hutianqiao@hotamail.com
+hutianqiao@hotamail.com.
 
 
