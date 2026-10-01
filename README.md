@@ -63,6 +63,7 @@ python scripts/run_cmame_v2_power_law_showcase.py --mode full --device cpu
 - Coarsening requires projection, invariant and verification checks
 
 ## Contact
-hsycipher@hotmail.com; hutianqiao@hotamail.com
+hsycipher@hotmail.com; 
+hutianqiao@hotamail.com
 
 
