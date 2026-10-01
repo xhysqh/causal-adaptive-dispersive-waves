@@ -1,0 +1,75 @@
+phase: CMAME-BO-P1
+output_dir: results/cmame_bo_p1_classical_adaptivity
+p0_acceptance: results/cmame_bo_p0_reference/full/acceptance.json
+next_phase_on_pass: CMAME-BO-P2_learned_nonlocal_error_operator
+
+domain:
+  length: 6.283185307179586
+
+families:
+  - smooth_periodic
+  - single_lorentzian
+  - two_lorentzian
+  - smooth_to_oscillatory
+
+calibration:
+  amplitudes: [0.8, 1.1]
+  phase_shifts: [0.17, 0.43]
+  points: [64, 128]
+  time_steps: [0.005, 0.01]
+  dop853_rtol: 1.0e-11
+  dop853_atol: 1.0e-13
+  minimum_richardson_safety: 1.25
+  safety_quantile: 0.95
+  safety_inflation: 1.10
+
+controller:
+  minimum_points: 32
+  maximum_points: 256
+  initial_points: 64
+  initial_dt: 0.01
+  minimum_dt: 0.000025
+  maximum_dt: 0.02
+  temporal_budget_fraction: 0.02
+  controller_safety: 0.85
+  minimum_step_factor: 0.25
+  maximum_step_factor: 1.8
+  refine_tail: 0.002
+  coarsen_tail: 2.0e-7
+  refine_aliasing: 0.0002
+  coarsen_aliasing: 2.0e-8
+  coarsen_patience: 2
+  maximum_migration_defect: 0.15
+  maximum_mass_drift: 1.0e-10
+  maximum_l2_drift: 2.0e-5
+  maximum_hamiltonian_drift: 2.0e-5
+
+external_audit:
+  amplitudes: [0.65, 1.0, 1.35]
+  phase_shifts: [0.29, 0.71]
+  tolerances: [0.001, 0.0003]
+  final_time: 0.08
+  reference_points: 256
+  reference_rtol: 1.0e-11
+  reference_atol: 1.0e-13
+  reference_maximum_step: 0.002
+  # Matched initial route: the fixed baseline uses the same N and starting dt
+  # as the adaptive controller.  The independent uniform-fine work budget is
+  # reported separately and is not folded into this accuracy comparison.
+  fixed_coarse_dt: 0.01
+
+acceptance:
+  minimum_calibration_upper_coverage: 0.90
+  minimum_terminal_tolerance_coverage: 0.90
+  minimum_paired_tolerance_monotone_fraction: 0.85
+  maximum_median_error_ratio_to_fixed_coarse: 1.05
+  maximum_active_dof_time_ratio_to_uniform_fine: 0.80
+  maximum_mass_drift: 1.0e-10
+  maximum_l2_drift: 2.0e-5
+  maximum_hamiltonian_drift: 2.0e-5
+
+scope: >-
+  Classical reference-free periodic BO space--time adaptivity. Fourier tail,
+  3/2-dealiasing defect, IFRK4 step-doubling and invariant drift are online;
+  BO-P0/DOP853 references are calibration or posthoc audit only. No neural
+  model, mCH data, post-state invariant projection or final-audit retuning.

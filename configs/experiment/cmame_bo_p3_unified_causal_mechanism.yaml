@@ -1,0 +1,29 @@
+phase: CMAME-BO-P3
+output_dir: results/cmame_bo_p3_unified_causal_mechanism
+prerequisites:
+  m13_acceptance: results/cmame_m13_local_compatible_amr/full/acceptance.json
+  bo_p21_acceptance: results/cmame_bo_p21_conformal_probe_pruner/acceptance.json
+sources:
+  mch_rows: results/cmame_m11_mixed_error_estimator/development/rows.csv
+  bo_dataset: results/cmame_bo_p21_conformal_probe_pruner/scheduled_probe_dataset.npz
+model: {hidden: 32}
+training:
+  seeds: [11, 29, 47]
+  epochs: 300
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  upper_quantile: 0.95
+calibration:
+  trajectory_coverage: 0.95
+  support_radius_quantile: 0.99
+  maximum_effectivity_upper: 1000.0
+acceptance:
+  minimum_selection_upper_coverage: 0.90
+  minimum_mch_terminal_coverage: 0.95
+  minimum_bo_terminal_coverage: 0.95
+  maximum_invariant_drift: 1.0e-10
+  maximum_bo_invariant_drift: 2.0e-5
+scope: >-
+  Shared dimensionless causal budget mechanism over frozen mCH M1.3 and BO
+  P2.1. Equation-specific conservative solvers remain authoritative. The
+  learned operator may rank analytically safe actions or abstain only.

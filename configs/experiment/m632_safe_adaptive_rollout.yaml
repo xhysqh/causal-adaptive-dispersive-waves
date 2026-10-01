@@ -1,0 +1,54 @@
+phase: M6.3.2_safe_space_time_adaptive_rollout
+source_m631_acceptance: results/m631_branch_learning/acceptance.json
+source_m631_data: results/m631_branch_learning
+source_m62_rollout: results/m62_post_training_rollout/rollout_metrics.json
+source_m62_checkpoints: results/m62_gpu_joint_training
+source_m4_acceptance: results/m4_mch_minimal_atlas/acceptance.json
+source_m5_config: configs/experiment/m5_safe_adaptive_rollout.yaml
+source_m3_config: configs/experiment/m3_mch_causal_dataset.yaml
+seeds: [11, 29, 47]
+device: auto
+model: {field_channels: 4, parameter_channels: 11, hidden: 24, wavelet_levels: 2}
+calibration: {coverage: 0.9}
+controller:
+  initial_dt: 0.01
+  minimum_dt: 0.0025
+  maximum_dt: 0.01
+  classical_tolerance: 1.0e-5
+  deployment_time_tolerance: 1.0e-6
+  deployment_space_tolerance: 5.0e-6
+  label_tolerance: 1.0e-8
+  particle_position_tolerance: 0.002
+  safety_factor: 0.9
+  minimum_shrink: 0.5
+  cluster_cells: 6.0
+  conservation_tolerance: 1.0e-10
+  maximum_steps: 1000
+  maximum_refined_fraction: 0.25
+rollout:
+  final_time: 0.04
+  cases:
+    - {scenario: particle_double_validation, points: 63}
+    - {scenario: particle_cluster_validation, points: 255}
+    - {scenario: particle_four_ood, points: 127}
+    - {scenario: smooth_sine_train, points: 64}
+    - {scenario: smooth_sine_train, points: 128}
+    - {scenario: smooth_random_ood, points: 96}
+    - {scenario: mixed_validation, points: 63}
+    - {scenario: signed_regularized_ood, points: 63}
+  cross_grid_pairs:
+    - {scenario: smooth_sine_train, coarse: 64, fine: 128}
+acceptance:
+  minimum_calibration_coverage: 0.9
+  minimum_audit_coverage: 0.75
+  maximum_mass_drift: 1.0e-10
+  maximum_energy_drift: 1.0e-10
+  median_error_ratio_to_m62_max: 1.05
+  worst_error_ratio_to_m62_max: 1.20
+  cross_grid_relative_h1_max: 0.20
+  maximum_runtime_overhead_ratio: 12.0
+  minimum_refined_steps: 1
+  minimum_time_reductions: 1
+  minimum_fallback_steps: 1
+  maximum_step_growth: 1.0
+  required_ablations: 8

@@ -1,0 +1,20 @@
+phase: M6.3.4.3.3.3_joint_reachable_risk_certificate
+output_dir: results/m634333_joint_reachability
+source_m634332_acceptance: results/m634332_separated_moe/acceptance.json
+source_base_checkpoints: results/m634331_horizon_risk
+source_moe_checkpoints: results/m634332_separated_moe
+source_dataset: results/m634330_first_exit_dataset/first_exit_samples.npz
+seeds: [11, 29, 47]
+device: auto
+base_model: {input_channels: 43, hidden: 64}
+moe_model: {input_channels: 43, hidden: 48, experts: 3, correction_bound: 1.5, temperature: 0.7}
+joint_model: {input_channels: 49, hidden: 64, risk_correction_bound: 0.75, risk_temperature: 5.0}
+training: {epochs: 1600, learning_rate: 0.001}
+calibration: {ensemble_sigma: 1.0, support_radius_fraction: 0.8}
+acceptance:
+  minimum_auc: 0.7
+  maximum_overaccepts: 0
+  minimum_long_horizon_acceptances: 1
+  minimum_selector_long_horizon_acceptances: 1
+  minimum_worst_group_coverage: 0.8
+  minimum_ensemble_variance: 1.0e-8

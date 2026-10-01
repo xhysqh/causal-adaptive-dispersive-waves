@@ -1,0 +1,24 @@
+phase: CMAME-V2-causal-history-horizon-ablation
+source_dataset_root: results/cmame_v2_predictive_risk/full
+training_config: configs/experiment/cmame_v2_stage3_predictive_risk_operator.yaml
+kdv_ilw_config: configs/experiment/cmame_v2_kdv_ilw_showcases.yaml
+power_law_config: configs/experiment/cmame_v2_power_law_showcase.yaml
+output_dir: results/cmame_v2_causal_ablation
+variants: [full, no_history, one_step]
+transfer_cases:
+  ilw_depth: 1.0
+  power_law_order: 2.6
+metrics:
+  corrective_actions: [refine_space, shrink_time]
+  realized_risk_threshold: 1.0
+  tolerance: 0.01
+acceptance:
+  require_all_runs_finite: true
+  require_all_terminal_tolerances: true
+  require_frozen_full_manifest_unchanged: true
+scope: >-
+  Minimal causal-method ablation. No-history suppresses the 18 causal-history
+  coordinates and is retrained. One-step retains all 42 coordinates but uses
+  the first zero-order-held rollout error as its target. Both variants use the
+  original mCH/BO trajectory groups, seeds, architecture, optimization, and
+  calibration protocol. ILW delta=1 and power-law p=2.6 remain frozen targets.

@@ -1,0 +1,49 @@
+phase: M6.3.4.3.3.5.0_first_exit_hazard_dataset
+output_dir: results/m6343350_first_exit_hazard_dataset
+source_m63432_acceptance: results/m63432_selective_safety_operator/acceptance.json
+source_m63432_calibration: results/m63432_selective_safety_operator/calibration.json
+source_m63432_checkpoints: results/m63432_selective_safety_operator
+source_safety_checkpoints: results/m63432_selective_safety_operator
+source_m6332_checkpoints: results/m6332_local_amr_operator
+source_m6341_checkpoints: results/m63431_deployment_risk_recalibration
+source_m6333_acceptance: results/m6333_safe_learned_rollout/acceptance.json
+seeds: [11, 29, 47]
+proposal_model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+risk_model: {context_channels: 48, residual_channels: 7, context_hidden: 32, residual_hidden: 16, context_correction_bound: 1.0}
+safety_model: {input_channels: 32, hidden: 48}
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+controller:
+  selected_weight: 0.0625
+  minimum_dt: 0.00005
+  maximum_dt: 0.0004
+  maximum_relative_energy_drift: 0.02
+  maximum_mass_drift: 1.0e-10
+  maximum_patch_migration_relative_h1: 0.02
+  maximum_patch_migration_to_step_increment: 0.1
+  proposal_reference_dt: 0.0002
+dataset:
+  seed: 17634335
+  length: 6.283185307179586
+  families: [separated]
+  points: [32, 64, 128]
+  dts: [0.00005, 0.0001, 0.0002]
+  labelled_starts_per_trajectory: 8
+  maximum_horizon: 8
+  groups: {train: 180, validation: 80}
+label:
+  maximum_shadow_defect_ratio: 0.1
+  minimum_direction_cosine: -0.05
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_energy_drift: 0.02
+  maximum_cfl: 0.45
+  maximum_patch_migration_to_step_increment: 0.1
+  exit_threshold: 1.0
+  severe_threshold: 2.0
+acceptance:
+  minimum_samples: 1500
+  minimum_first_exits: 30
+  minimum_no_exit: 30
+  minimum_boundary_samples: 30
+  maximum_registered_hard_exit_fraction: 0.01
+  minimum_statistical_only_exits: 5
+  minimum_cell_samples_per_split: 40

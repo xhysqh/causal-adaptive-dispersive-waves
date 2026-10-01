@@ -1,0 +1,24 @@
+phase: M6.3.3.2_local_amr_operator_training
+source_m6331_acceptance: results/m6331_mixed_amr_dataset/acceptance.json
+source_dataset: results/m6331_mixed_amr_dataset/mixed_amr_causal_samples.npz
+seeds: [11, 29, 47]
+device: auto
+model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+training:
+  refinement_epochs: 60
+  local_epochs: 80
+  joint_epochs: 40
+  learning_rate: 0.002
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+cross_grid: {seed: 9917, length: 6.283185307179586, dt: 0.0002}
+acceptance:
+  minimum_seeds: 3
+  maximum_branch_ratio_to_strong_baseline: 0.95
+  minimum_mask_recall: 0.5
+  minimum_marked_energy_recall: 0.65
+  maximum_detail_sum_error: 1.0e-8
+  maximum_reflux_sum_error: 1.0e-8
+  minimum_cross_grid_refinement_correlation: 0.25
+  minimum_cross_grid_reflux_weak_correlation: 0.2
+  minimum_ensemble_variance: 1.0e-16
+  minimum_samplewise_uncertainty_correlation: 0.2

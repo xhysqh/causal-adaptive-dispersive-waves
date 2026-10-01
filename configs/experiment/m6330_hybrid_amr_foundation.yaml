@@ -1,0 +1,27 @@
+phase: M6.3.3.0_hybrid_amr_foundation
+source_m632_acceptance: results/m632_safe_adaptive_rollout/acceptance.json
+seed: 6330
+domain:
+  length: 6.283185307179586
+  coarse_points: [32, 64]
+  alpha: 0.8
+  gamma: 0.0
+  coarse_dt: 0.0002
+  coarse_steps: 4
+refinement:
+  theta: 0.6
+  maximum_fraction: 0.4
+  halo_cells: 1
+  maximum_cfl: 0.45
+acceptance:
+  maximum_local_green_error: 1.0e-12
+  maximum_reflux_mass_error: 1.0e-12
+  minimum_marked_energy_fraction: 0.6
+  maximum_active_fraction: 0.4
+  minimum_coupling_signal: 1.0e-4
+  maximum_backbone_invariant_drift: 1.0e-10
+  maximum_composite_mass_drift: 1.0e-10
+  maximum_composite_relative_energy_drift: 0.005
+  maximum_uniform_fine_relative_h1: 0.005
+  maximum_local_source_fraction: 0.4
+  minimum_particle_separation: 0.25

@@ -1,0 +1,18 @@
+phase: CMAME-PAPER-FIGURES-2-6
+output_dir: results/cmame_paper_figures_2_to_6
+
+inputs:
+  f2_showcase: results/cmame_f2_closed_loop_paper_evidence/{mode}/closed_loop_showcase.npz
+  f2_acceptance: results/cmame_f2_closed_loop_paper_evidence/{mode}/acceptance.json
+  kdv_trajectory: results/cmame_kdv_u11_self_certifying/{mode}/representative_trajectory.npz
+  kdv_acceptance: results/cmame_kdv_u11_self_certifying/{mode}/acceptance.json
+  ilw_trajectories: results/cmame_u211_ilw_evidence_repair/{mode}/representative_trajectories.npz
+  ilw_acceptance: results/cmame_u211_ilw_evidence_repair/{mode}/acceptance.json
+  power_trajectories: results/cmame_u201_unknown_wave_evidence_repair/{mode}/representative_trajectories.npz
+  power_acceptance: results/cmame_u201_unknown_wave_evidence_repair/{mode}/acceptance.json
+
+selection:
+  # Mid-depth ILW is the precommitted bridge case; all depths remain available
+  # in the frozen evidence for later supplementary figures.
+  ilw_depth: 1.0
+  power_orders: [2.2, 2.4, 2.6, 2.8, 3.2]

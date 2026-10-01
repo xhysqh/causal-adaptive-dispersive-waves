@@ -1,0 +1,21 @@
+phase: M6.3.4.1_shadow_defect_risk_operator
+source_m6340_acceptance: results/m6340_shadow_defect_dataset/acceptance.json
+source_dataset: results/m6340_shadow_defect_dataset/shadow_defect_samples.npz
+seeds: [11, 29, 47]
+device: auto
+model: {context_channels: 48, residual_channels: 7, context_hidden: 24, residual_hidden: 12}
+training: {epochs: 600, learning_rate: 0.002}
+calibration: {coverage: 0.9, ensemble_sigma: 1.0, defect_tolerance: 0.1}
+acceptance:
+  maximum_defect_ratio_to_strong_baseline: 0.95
+  minimum_safe_weight_auc: 0.85
+  minimum_validation_coverage: 0.9
+  minimum_audit_coverage: 0.8
+  minimum_worst_group_coverage: 0.5
+  minimum_direction_coverage: 0.8
+  maximum_audit_weight_overestimates: 0
+  maximum_validation_weight_overestimates: 0
+  minimum_validation_positive_weights: 1
+  minimum_audit_positive_weights: 1
+  minimum_ensemble_variance: 1.0e-8
+  minimum_residual_ablation_mse_ratio: 1.05

@@ -1,0 +1,29 @@
+phase: CMAME-V2-PINN-aligned-showcase
+output_dir: results/cmame_v2_pinn_aligned_showcase
+enable_verified_coarsening: true
+controller_overrides:
+  # Peak-bearing mCH states must remain below this regularity indicator before
+  # a verified projection can be accepted as a physically smooth coarsening.
+  coarse_localized_sharpness_limit: 0.50
+stage2_config: configs/experiment/cmame_v2_predictive_risk.yaml
+stage4_config: configs/experiment/cmame_v2_stage4_safety_shielded_controller.yaml
+source_manifest: results/cmame_v2_predictive_risk/full/frozen_v2_predictive_risk_manifest.json
+domain: {length: 6.283185307179586}
+full:
+  minimum_points: 32
+  points: 64
+  maximum_points: 256
+  decisions: 32
+  dt: 0.0005
+  tolerance: 0.001
+  visualization_points: 256
+  reference_refinement: 4
+showcase:
+  modified_camassa_holm: {family: mixed_clustered, seed: 91012003}
+  benjamin_ono: {family: two_lorentzian, seed: 91512003}
+acceptance:
+  maximum_terminal_relative_h1_error: 0.10
+scope: >-
+  Frozen V2 deployment on the original pre-registered mCH and BO PINN
+  comparison showcases. All adaptive actions are committed before posthoc
+  references and frozen coordinate-PINN predictions are evaluated.

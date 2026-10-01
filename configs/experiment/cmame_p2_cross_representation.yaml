@@ -1,0 +1,20 @@
+phase: CMAME-P2.0
+next_phase_on_pass: CMAME-P2.1_mixed_causal_dataset
+p1_acceptance: results/cmame_p1_gpu_scale_revalidation/acceptance.json
+output_dir: results/cmame_p2_cross_representation
+domain:
+  length: 6.283185307179586
+  grids: [64, 128, 256]
+parameters:
+  alpha: 0.8
+  gamma: 0.0
+integration:
+  dt: 5.0e-5
+  rollout_steps: 16
+  collision_tolerance: 1.0e-6
+acceptance:
+  maximum_pure_particle_velocity_defect: 1.0e-12
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_h1_drift: 1.0e-10
+  maximum_amplitude_drift: 1.0e-14
+  minimum_weak_action_order: 1.5

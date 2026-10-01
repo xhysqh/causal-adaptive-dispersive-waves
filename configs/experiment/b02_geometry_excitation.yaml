@@ -1,0 +1,103 @@
+seed: 20260804
+source_b01_acceptance: results/b01_intrinsic_identifiability/acceptance.json
+output_dir: results/b02_geometry_excitation
+domain: {x_min: -10.0, length: 20.0}
+
+# B0.2 is a no-training screen.  A larger confirmation campaign is authorized
+# only if this pre-registered discovery/OOD design detects replicated signal.
+reference:
+  master_points: 256
+  shadow_points: 512
+  output_dt: 0.002
+  method: DOP853
+  rtol: 1.0e-10
+  atol: 1.0e-12
+  dealias: true
+  filter: false
+
+design:
+  coarse_points: [64, 128]
+  time_steps: [0.004, 0.002]
+  maximum_samples_per_trajectory: 96
+  high_angle_quantile: 0.75
+  required_families:
+    [gaussian, single_peakon, double_peakon, triple_peakon,
+     perturbed_peakon, random_smooth]
+  required_splits: [discovery, ood]
+  peakon_families:
+    [single_peakon, double_peakon, triple_peakon, perturbed_peakon]
+  scenarios:
+    gaussian_discovery:
+      family: gaussian
+      split: discovery
+      final_time: 0.08
+      equation: {k1: 0.0, k2: 1.0, k: 1}
+      initial: {kind: gaussian, amplitude: 0.55, center: -1.0, width: 1.1}
+    single_discovery:
+      family: single_peakon
+      split: discovery
+      final_time: 0.12
+      equation: {k1: 0.0, k2: 1.0, k: 1}
+      initial: {kind: single_peakon, amplitude: 0.9, center: -1.2, width: 1.0}
+    single_ood:
+      family: single_peakon
+      split: ood
+      final_time: 0.12
+      equation: {k1: 0.02, k2: 0.9, k: 1}
+      initial: {kind: single_peakon, amplitude: 1.1, center: 0.7, width: 0.85}
+    double_discovery:
+      family: double_peakon
+      split: discovery
+      final_time: 0.20
+      equation: {k1: 0.0, k2: 1.0, k: 1}
+      initial:
+        {kind: multi_peakon, amplitudes: [1.3, 0.55],
+         centers: [-0.9, 0.9], width: 1.0}
+    double_ood:
+      family: double_peakon
+      split: ood
+      final_time: 0.20
+      equation: {k1: 0.04, k2: 0.85, k: 1}
+      initial:
+        {kind: multi_peakon, amplitudes: [1.45, 0.45],
+         centers: [-0.65, 0.75], width: 0.85}
+    triple_ood:
+      family: triple_peakon
+      split: ood
+      final_time: 0.12
+      equation: {k1: 0.02, k2: 1.0, k: 1}
+      initial:
+        {kind: multi_peakon, amplitudes: [1.1, 0.7, 0.35],
+         centers: [-1.1, 0.0, 1.0], width: 0.9}
+    perturbed_ood:
+      family: perturbed_peakon
+      split: ood
+      final_time: 0.12
+      equation: {k1: 0.03, k2: 0.9, k: 1}
+      initial:
+        kind: perturbed_peakon
+        amplitude: 1.0
+        center: -0.4
+        width: 0.9
+        perturbation_amplitudes: [0.025, 0.012]
+        perturbation_modes: [3, 7]
+        perturbation_phases: [0.3, -0.4]
+    random_smooth_ood:
+      family: random_smooth
+      split: ood
+      final_time: 0.08
+      equation: {k1: 0.01, k2: 0.95, k: 1}
+      initial: {kind: random_smooth, amplitude: 0.65, modes: 8, decay: 2.5, seed: 731}
+
+acceptance:
+  maximum_log_exp_relative_error: 1.0e-10
+  minimum_antipodal_margin: 0.1
+  maximum_high_angle_median_reference_floor: 0.30
+  minimum_peakon_high_angle_median_angle: 1.0e-3
+  minimum_peakon_high_angle_median_relative_signal: 1.0e-3
+  minimum_peakon_signal_to_reference_floor: 1.0
+  minimum_observable_discovery_peakon_families: 1
+  minimum_observable_ood_peakon_families: 1
+  minimum_replicated_peakon_families: 1
+  minimum_unique_equations: 3
+

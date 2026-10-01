@@ -1,0 +1,76 @@
+phase: CMAME-U2.0.1-evidence-repair
+output_dir: results/cmame_u201_unknown_wave_evidence_repair
+mechanism_output_dir: results/cmame_u1_universal_mechanism
+next_phase_on_pass: CMAME-U3_multiequation_paper_benchmark
+
+domain: {length: 20.0, x_min: -10.0}
+seeds: {development_base: 131000000, external_base: 133000000}
+families: [single_soliton, two_soliton_collision, cnoidal_periodic, smooth_to_oscillatory]
+
+# Orders are never represented by equation names.  Full includes interpolation
+# between BO/KdV traits and an extrapolative p=3.2 case.
+development:
+  dispersion_orders: [2.35, 2.65]
+  groups_per_family: 1
+  decisions: 6
+  points: 32
+  maximum_points: 64
+  probe_maximum_points: 128
+  reference_points: 64
+  macro_dt: 0.002
+  tolerances: [0.05, 0.0001]
+  maximum_invariant_drift: 0.02
+  acceptance:
+    minimum_tolerance_coverage: 0.75
+    minimum_trait_coverage: 0.0
+    minimum_authority_fraction: 0.20
+    minimum_probe_reduction_fraction: 0.25
+    minimum_action_intervention_fraction: 0.005
+    maximum_invariant_drift: 0.02
+
+full:
+  dispersion_orders: [2.2, 2.4, 2.6, 2.8, 3.2]
+  groups_per_family: 3
+  decisions: 48
+  points: 32
+  maximum_points: 256
+  probe_maximum_points: 512
+  reference_points: 512
+  macro_dt: 0.01
+  tolerances: [0.003, 0.0001]
+  maximum_invariant_drift: 0.001
+
+traits:
+  nonlinear_intercept: 1.0
+  nonlinear_slope: 2.0
+  tail_fraction: 0.65
+  maximum_nonlinear_phase: 2.0
+
+estimator: {richardson_safety: 1.25, spatial_safety: 0.05, representation_safety: 0.02}
+certification:
+  warmup_probes: 3
+  rolling_window: 8
+  release_horizon: 6
+  verification_interval: 4
+  probe_safety: 1.50
+  maximum_log_jump: 1.50
+  reserve_fraction: 0.10
+reference: {rtol: 1.0e-10, atol: 1.0e-12}
+statistics: {bootstrap_samples: 4000, confidence: 0.95, seed: 20260831}
+
+acceptance:
+  minimum_tolerance_coverage: 0.95
+  minimum_trait_coverage: 0.90
+  minimum_authority_fraction: 0.30
+  minimum_probe_reduction_fraction: 0.50
+  minimum_action_intervention_fraction: 0.005
+  maximum_total_work_ratio_to_always_probe: 0.90
+  maximum_median_error_ratio_to_always_probe: 1.05
+  maximum_invariant_drift: 0.001
+
+scope: >-
+  Frozen-property transfer to unnamed power-law dispersive equations. The
+  shared model was trained only on mCH and BO; KdV informed the certification
+  mechanism but none of these fractional/extrapolative orders train, calibrate
+  or alter it. Online hierarchical probes are reference-free and all DOP853
+  trajectories are constructed posthoc.

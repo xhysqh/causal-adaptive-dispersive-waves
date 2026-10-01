@@ -1,0 +1,19 @@
+phase: M6.3.4.3.3.5.1_hazard_bellman_operator
+output_dir: results/m6343351_hazard_bellman_operator
+source_dataset_dir: results/m6343350_first_exit_hazard_dataset
+model: {input_channels: 43, hidden: 48, maximum_horizon: 8, embedding_channels: 8}
+training:
+  seeds: [11, 29, 47]
+  epochs: 2000
+  learning_rate: 0.001
+  severe_threshold: 2.0
+  internal_validation_fraction: 0.2
+  patience: 20
+  evaluation_interval: 10
+acceptance:
+  minimum_horizon_auc: 0.7
+  maximum_nll_to_baseline: 1.0
+  maximum_log_severity_mae: 0.45
+  maximum_log_direction_mae: 0.45
+  minimum_severe_recall: 0.65
+  minimum_ensemble_variance: 1.0e-8

@@ -1,0 +1,64 @@
+phase: CMAME-F1.0.1
+output_dir: results/cmame_f101_metric_repair
+next_phase_on_pass: CMAME-PAPER_manuscript_evidence
+domain: {length: 6.283185307179586}
+families:
+  modified_camassa_holm: [smooth_control, pure_particle_control, mixed_separated, mixed_clustered]
+  benjamin_ono: [smooth_periodic, single_lorentzian, two_lorentzian, smooth_to_oscillatory]
+splits:
+  train: {groups_per_family: 24, seed: 81000000}
+  validation: {groups_per_family: 6, seed: 82000000}
+  calibration: {groups_per_family: 6, seed: 83000000}
+  selection: {groups_per_family: 6, seed: 84000000}
+  external: {groups_per_family: 10, seed: 85000000}
+development:
+  groups_per_family_cap: 1
+  prefixes: 2
+  points: 32
+  dt: 0.0005
+  tolerance: 0.002
+  reference_refinement: 2
+  minimum_selection_upper_coverage: 0.65
+  minimum_overall_tolerance_coverage: 0.75
+  minimum_family_tolerance_coverage: 0.0
+  minimum_paired_monotone_fraction: 0.75
+  maximum_bo_invariant_drift: 1.0e-4
+full:
+  prefixes: 8
+  points: 64
+  dt: 0.0005
+  tolerance: 0.001
+  reference_refinement: 4
+metric:
+  version: total_h1_reference_norm_v2
+  minimum_reference_h1_norm: 1.0e-12
+  identity_tolerance: 1.0e-12
+nonlinear_solver: {tolerance: 1.0e-11, maximum_iterations: 80, damping: 1.0}
+reference: {rtol: 1.0e-10, atol: 1.0e-12, collision_tolerance: 1.0e-8}
+model: {hidden: 48}
+training:
+  seeds: [11, 29, 47]
+  epochs: 350
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  gradient_clip: 2.0
+  upper_quantile: 0.95
+  causal_epsilon: 0.25
+calibration:
+  trajectory_coverage: 0.95
+  support_radius_quantile: 0.99
+  reserve_fraction: 0.10
+acceptance:
+  minimum_selection_upper_coverage: 0.90
+  minimum_overall_tolerance_coverage: 0.95
+  minimum_family_tolerance_coverage: 0.90
+  minimum_paired_monotone_fraction: 0.95
+  maximum_shared_to_separate_error_ratio: 1.05
+  maximum_mch_invariant_drift: 1.0e-10
+  maximum_bo_invariant_drift: 2.0e-5
+  maximum_work_ratio_to_deterministic: 1.10
+scope: >-
+  Fresh trajectory-balanced prospective mCH--BO confirmation after repairing
+  the cross-representation relative-H1 denominator. References are label and
+  posthoc only; the shared model cannot advance a PDE or relax an analytical
+  safety condition. All split seeds are disjoint from the invalid F1 evidence.

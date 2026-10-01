@@ -1,0 +1,24 @@
+phase: M2_mch_atlas
+source_m1_acceptance: results/m01_mch_foundation/acceptance.json
+length: 6.283185307179586
+cross_grid_points: [63, 127, 255]
+detector:
+  maximum_atoms: 8
+  candidate_exclusion_cells: 1
+  minimum_cusp_strength: 0.08
+  momentum_prominence_sigma: 8.0
+  field_enter_confidence: 0.72
+  field_exit_confidence: 0.58
+  separation_enter_cells: 6.0
+  separation_exit_cells: 4.0
+  gram_condition_max: 1.0e+10
+  rank_tolerance: 1.0e-10
+  cluster_radius_cells: 6.0
+  reference_floor: 1.0e-10
+  fit_max_nfev: 300
+acceptance:
+  maximum_position_error: 1.0e-6
+  maximum_amplitude_error: 1.0e-6
+  maximum_relative_field_norm: 1.0e-6
+  minimum_signal_to_floor: 1.0e+6
+  maximum_hysteresis_switches: 2

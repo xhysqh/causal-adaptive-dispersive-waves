@@ -1,0 +1,62 @@
+phase: M6.1_broad_closed_loop_regime_study
+source_m6_acceptance: results/m6_mch_pinn_cnn_operator/acceptance.json
+source_m4_acceptance: results/m4_mch_minimal_atlas/acceptance.json
+source_m3_config: configs/experiment/m3_mch_causal_dataset.yaml
+source_m5_config: configs/experiment/m5_safe_adaptive_rollout.yaml
+seeds: [11, 29, 47]
+model: {hidden: 8, device: auto}
+registered_domain:
+  alpha: [0.7, 1.4]
+  gamma: [0.0, 0.2]
+  length: [6.283185307179586, 10.0]
+  points: [63, 64, 96, 127, 128, 255]
+  dt: [0.0025, 0.01]
+  families: [particle, smooth, regularized_mixed]
+  maximum_atoms: 8
+physics: {weak_modes: 4, localized_tests: 4}
+closed_loop:
+  steps: 3
+  oracle_substeps: 8
+  cases:
+    - {scenario: particle_single_train, points: 63, dt: 0.0025, role: train}
+    - {scenario: particle_triple_train, points: 127, dt: 0.005, role: train}
+    - {scenario: particle_cluster_train, points: 255, dt: 0.005, role: train}
+    - {scenario: smooth_sine_train, points: 64, dt: 0.01, role: train}
+    - {scenario: smooth_cosine_train, points: 128, dt: 0.005, role: train}
+    - {scenario: particle_double_validation, points: 63, dt: 0.01, role: calibration}
+    - {scenario: particle_cluster_validation, points: 255, dt: 0.0025, role: calibration}
+    - {scenario: mixed_validation, points: 127, dt: 0.005, role: calibration}
+    - {scenario: particle_four_ood, points: 127, dt: 0.01, role: audit}
+    - {scenario: particle_cluster_ood, points: 255, dt: 0.005, role: audit}
+    - {scenario: signed_regularized_ood, points: 63, dt: 0.0025, role: audit}
+    - {scenario: smooth_random_ood, points: 96, dt: 0.01, role: audit}
+calibration: {epochs: 300, learning_rate: 0.02, coverage: 0.9}
+rollout:
+  final_time: 0.04
+  cases:
+    - {scenario: particle_double_validation, points: 63}
+    - {scenario: particle_double_validation, points: 127}
+    - {scenario: particle_cluster_validation, points: 255}
+    - {scenario: mixed_validation, points: 63}
+    - {scenario: particle_four_ood, points: 127}
+    - {scenario: particle_cluster_ood, points: 255}
+    - {scenario: signed_regularized_ood, points: 63}
+    - {scenario: smooth_random_ood, points: 96}
+    - {scenario: smooth_sine_train, points: 64}
+    - {scenario: smooth_sine_train, points: 128}
+  cross_grid_pairs:
+    - {scenario: particle_double_validation, coarse: 63, fine: 127}
+    - {scenario: smooth_sine_train, coarse: 64, fine: 128}
+acceptance:
+  minimum_closed_loop_samples: 36
+  minimum_global_calibration_coverage: 0.9
+  minimum_worst_calibration_group_coverage: 0.66
+  minimum_global_audit_coverage: 0.75
+  minimum_worst_audit_group_coverage: 0.66
+  maximum_mass_drift: 1.0e-10
+  maximum_energy_drift: 1.0e-10
+  median_error_ratio_to_m5_max: 1.05
+  worst_error_ratio_to_m5_max: 1.20
+  cross_grid_relative_h1_max: 0.20
+  runtime_overhead_ratio_max: 8.0
+  maximum_learned_step_factor: 1.0

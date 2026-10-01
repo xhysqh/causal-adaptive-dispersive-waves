@@ -1,0 +1,44 @@
+phase: M6.3.4.3.2_complete_rollout
+output_dir: results/m63432_complete_rollout
+source_safety_acceptance: results/m63432_selective_safety_operator/acceptance.json
+source_safety_calibration: results/m63432_selective_safety_operator/calibration.json
+source_safety_checkpoints: results/m63432_selective_safety_operator
+source_m6332_checkpoints: results/m6332_local_amr_operator
+source_m6341_checkpoints: results/m63431_deployment_risk_recalibration
+source_m6333_acceptance: results/m6333_safe_learned_rollout/acceptance.json
+seeds: [11, 29, 47]
+proposal_model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+risk_model: {context_channels: 48, residual_channels: 7, context_hidden: 32, residual_hidden: 16, context_correction_bound: 1.0}
+safety_model: {input_channels: 32, hidden: 48}
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+controller:
+  selected_weight: 0.0625
+  minimum_dt: 0.00005
+  maximum_dt: 0.0004
+  shrink_factor: 0.5
+  maximum_relative_energy_drift: 0.02
+  maximum_mass_drift: 1.0e-10
+  maximum_patch_migration_relative_h1: 0.02
+  maximum_patch_migration_to_step_increment: 0.1
+  proposal_reference_dt: 0.0002
+  enable_time_growth: true
+  growth_factor: 1.25
+  growth_patience: 2
+  growth_risk_margin: 0.05
+  growth_cfl_fraction: 0.6
+rollout:
+  seeds: [2063432, 2063433, 2063434, 2063435]
+  length: 6.283185307179586
+  families: [smooth, separated, clustered]
+  points: [32, 64, 128]
+  dts: [0.00005, 0.0001, 0.0002, 0.00025]
+  steps: 4
+acceptance:
+  maximum_shadow_defect_ratio: 0.1
+  minimum_direction_cosine: -0.05
+  maximum_unsafe_acceptances: 0
+  minimum_learned_steps: 4
+  minimum_family_coverage: 3
+  minimum_grid_coverage: 3
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_energy_drift: 0.02

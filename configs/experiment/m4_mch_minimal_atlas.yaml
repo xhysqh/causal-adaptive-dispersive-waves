@@ -1,0 +1,32 @@
+phase: M4_minimal_atlas_network
+source_m3_dir: results/m3_mch_causal_dataset
+seeds: [11, 29, 47]
+model:
+  hidden: 8
+training:
+  epochs: 350
+  learning_rate: 0.003
+  weight_decay: 1.0e-3
+  particle_weight_decay: 1.0e-1
+  gradient_clip: 1.0
+rollout_finetune:
+  horizons: [2, 3, 4]
+  epochs: 40
+  learning_rate: 5.0e-4
+  weight_decay: 1.0e-4
+  one_step_anchor_weight: 0.25
+loss_weights:
+  field: 1.0
+  separated: 1.0
+  cluster: 1.0
+  unconstrained_amplitude: 0.25
+acceptance:
+  validation_total_relative_mse_max: 0.95
+  ood_total_relative_mse_max: 1.0
+  separated_relative_mse_max: 1.0
+  cluster_relative_mse_max: 1.0
+  cluster_position_relative_mse_max: 1.0
+  cluster_moment_relative_mse_max: 1.0
+  field_relative_mse_max: 1.0
+  maximum_hard_amplitude_violation: 0.0
+  minimum_ablation_margin: 1.0e-4

@@ -1,0 +1,38 @@
+phase: CMAME-V2-stage-3-predictive-risk-operator
+output_dir: results/cmame_v2_predictive_risk
+dataset_name: v2_predictive_risk_dataset.npz
+next_phase_on_pass: CMAME-V2-stage-4-safety-shielded-controller
+
+model:
+  hidden: 64
+  minimum_robust_scale: 0.005
+training:
+  seeds: [311, 313, 317]
+  epochs: 500
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  gradient_clip: 2.0
+  upper_quantile: 0.95
+  underestimate_weight: 3.0
+  cost_weight: 0.20
+  probe_weight: 0.05
+  probe_positive_weight: 50.0
+calibration:
+  trajectory_coverage: 0.95
+  ensemble_std_multiplier: 1.0
+  support_neighbors: 8
+  support_coverage: 0.95
+  maximum_support_anchors: 4096
+acceptance:
+  minimum_selection_upper_coverage: 0.90
+  minimum_selection_support_coverage: 0.80
+development:
+  minimum_selection_upper_coverage: 0.60
+  minimum_selection_support_coverage: 0.40
+scope: >-
+  Stage 3 trains an equation-neutral ensemble for the logarithm of the H=2
+  zero-order-hold future-risk label. The calibration split is used only for
+  trajectory-group one-sided conformal enlargement and support calibration.
+  The selection split is excluded from fitting, calibration, early stopping,
+  and threshold choice. The probe output is retained as a diagnostic only;
+  its sparse labels grant no online authority in this phase.

@@ -1,0 +1,60 @@
+seed: 20260720
+equation:
+  k1: 0.0
+  k2: 1.0
+  k: 1
+domain:
+  x_min: -10.0
+  length: 20.0
+grids:
+  points: [128, 256, 512]
+time:
+  output_dt: 0.002
+  gaussian_final_time: 0.1
+  single_peakon_final_time: 0.2
+  double_peakon_final_time: 0.5
+dop853:
+  method: DOP853
+  rtol: 1.0e-10
+  atol: 1.0e-12
+spectral:
+  filter_alpha: 18.0
+  filter_order: 16
+  high_frequency_fraction: 0.3333333333333333
+variants:
+  raw:
+    dealias: false
+    filter: false
+  dealias:
+    dealias: true
+    filter: false
+  weak_filter:
+    dealias: true
+    filter: true
+scenarios:
+  gaussian:
+    kind: gaussian
+    amplitude: 0.5
+    center: -2.0
+    width: 1.2
+  single_peakon:
+    kind: single_peakon
+    amplitude: 1.0
+    center: -3.0
+    width: 1.0
+  double_peakon:
+    kind: multi_peakon
+    amplitudes: [1.2, 0.5]
+    centers: [-1.0, 1.0]
+    width: 1.0
+acceptance:
+  derivative_l2_tol: 1.0e-10
+  helmholtz_inverse_tol: 1.0e-11
+  dealias_tail_tol: 1.0e-12
+  require_gaussian_decrease: true
+  require_peakon_decrease: true
+  require_cross_solver_decrease: true
+  maximum_filter_relative_h1: 0.05
+  maximum_peak_position_difference: 0.4
+  require_finite: true
+output_dir: results/reference_cross_validation

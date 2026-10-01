@@ -1,0 +1,35 @@
+phase: CMAME-V2-stage-7-bidirectional-transient
+output_dir: results/cmame_v2_stage7_bidirectional_transient
+enable_verified_coarsening: true
+stage2_config: configs/experiment/cmame_v2_predictive_risk.yaml
+stage4_config: configs/experiment/cmame_v2_stage4_safety_shielded_controller.yaml
+source_manifest: results/cmame_v2_predictive_risk/full/frozen_v2_predictive_risk_manifest.json
+domain: {length: 6.283185307179586}
+development:
+  minimum_points: 16
+  points: 32
+  maximum_points: 64
+  decisions: 8
+  dt: 0.0005
+  tolerance: 0.01
+  reference_refinement: 2
+full:
+  minimum_points: 32
+  points: 64
+  maximum_points: 128
+  decisions: 24
+  dt: 0.0005
+  tolerance: 0.01
+  reference_refinement: 4
+showcase:
+  modified_camassa_holm: {family: mixed_separated, seed: 205020000}
+  benjamin_ono: {family: two_lorentzian, seed: 205520000}
+acceptance:
+  maximum_terminal_relative_h1_error: 0.10
+  require_deterministic_admissibility: true
+scope: >-
+  Stage 7 uses interaction-rich mCH and BO families and extends the post-event
+  propagation window. It audits whether the frozen controller first allocates
+  resolution when needed, then opens independently verified coarsening only
+  after physical stability has persisted. No collision reference, future state,
+  or external equation data is available to the online controller.

@@ -1,0 +1,17 @@
+phase: M6.3.4.3.3.5.2.4-R2.4.1-A_readonly_fusion_ablation_audit
+source_output_dir: results/m63433524r241_local_counterfactual_repair
+source_dataset_file: target_counterfactual_local_risk_samples.npz
+source_dataset_acceptance_file: target_counterfactual_dataset_acceptance.json
+source_head_acceptance_file: local_head_selection_acceptance.json
+output_dir: results/_analysis/m63433524r241a_readonly_fusion_audit
+scope: >-
+  Read-only architecture diagnostic of the immutable R2.4.1 STOP archive.
+  No threshold, gate, checkpoint, calibration result, selection certificate or
+  LTT is generated. The source archive is prohibited from future R2.4.2
+  training, calibration, threshold selection and certification.
+audit:
+  seeds: [401, 419, 431]
+  hidden_channels: 32
+  epochs: 240
+  learning_rate: 0.001
+  upper_std_multiplier: 1.0

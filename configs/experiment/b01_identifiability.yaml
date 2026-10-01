@@ -1,0 +1,18 @@
+seed: 20260804
+source_dir: results/a21_target_representation/candidates/r4_full
+source_b0_acceptance: results/b0_geometry_ablation/acceptance.json
+reference_audit: results/a21_reference_repair/reference_increment_audit.csv
+output_dir: results/b01_intrinsic_identifiability
+domain: {x_min: -10.0, length: 20.0}
+evaluation:
+  maximum_samples_per_trajectory: 256
+  high_angle_quantile: 0.75
+acceptance:
+  maximum_log_exp_relative_error: 1.0e-10
+  minimum_antipodal_margin: 0.1
+  minimum_peakon_high_angle_median_angle: 1.0e-3
+  minimum_peakon_high_angle_median_relative_signal: 1.0e-3
+  minimum_peakon_signal_to_reference_floor: 1.0
+  minimum_observable_peakon_families: 1
+  maximum_reference_floor_for_claim: 0.30
+

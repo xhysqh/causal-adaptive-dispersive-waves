@@ -1,0 +1,40 @@
+phase: M6.3.4.3.3.5.2.1_paired_space_time_scale_audit
+output_dir: results/m63433521_paired_scale_shadow
+next_phase: M6.3.4.3.3.5.2.2_scale_consistent_risk_recalibration
+scope: Independent paired separated pre-collision scale audit; frozen upstream artifacts are read-only.
+source_m6332_checkpoints: results/m6332_local_amr_operator
+source_m6341_checkpoints: results/m63431_deployment_risk_recalibration
+source_m6333_acceptance: results/m6333_safe_learned_rollout/acceptance.json
+source_m6343352_acceptance: results/m6343352_risk_margin_calibration/margin_acceptance.json
+seeds: [11, 29, 47]
+proposal_model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+risk_model: {context_channels: 48, residual_channels: 7, context_hidden: 32, residual_hidden: 16, context_correction_bound: 1.0}
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+controller:
+  selected_weight: 0.0625
+  minimum_dt: 0.00005
+  maximum_dt: 0.0004
+  maximum_relative_energy_drift: 0.02
+  maximum_mass_drift: 1.0e-10
+  maximum_patch_migration_relative_h1: 0.02
+  maximum_patch_migration_to_step_increment: 0.1
+  proposal_reference_dt: 0.0002
+paired_audit:
+  seed: 196343521
+  length: 6.283185307179586
+  family: separated
+  points: [32, 64, 128]
+  dts: [0.00005, 0.0001, 0.0002]
+  groups: {train: 24, validation: 12}
+  spatial_richardson_order: 2.0
+  temporal_richardson_order: 2.0
+  order_candidates: [0.5, 1.0, 1.5, 2.0, 2.5, 3.0]
+  safety_quantile: 0.9
+  old_maximum_shadow_defect_ratio: 0.1
+acceptance:
+  minimum_rows: 300
+  minimum_validation_coverage: 0.70
+  minimum_worst_cell_validation_coverage: 0.40
+  maximum_reference_uncertainty_to_state_p95: 0.10
+  require_new_cell_log_spread_not_worse: true
+  require_new_dt_correlation_not_worse: true

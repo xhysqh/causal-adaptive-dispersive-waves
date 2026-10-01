@@ -1,0 +1,47 @@
+phase: CMAME-E3
+next_phase_on_pass: CMAME-P5_manuscript_evidence
+p3_config: configs/experiment/cmame_p3_space_time_adaptivity.yaml
+e2_development_acceptance: results/cmame_e2_equal_route_benchmark/development/acceptance.json
+e2_full_acceptance: results/cmame_e2_equal_route_benchmark/full/acceptance.json
+output_dir: results/cmame_e3_paper_benchmark
+domain: {length: 6.283185307179586}
+development_matrix:
+  families: [smooth_control, pure_particle_control, mixed_separated, mixed_clustered]
+  grids: [32, 64]
+  alphas: [0.8, 1.2]
+  initial_dts: [1.0e-4]
+  replicates: 1
+  seed_base: 2840000
+  horizon_steps: 4
+full_matrix:
+  families: [smooth_control, pure_particle_control, mixed_separated, mixed_clustered]
+  grids: [32, 64, 128]
+  alphas: [0.5, 0.8, 1.0, 1.2, 1.5]
+  initial_dts: [5.0e-5, 1.0e-4, 2.0e-4]
+  replicates: 3
+  seed_base: 2940000
+  horizon_steps: 16
+reference:
+  refinement: 4
+  rtol: 1.0e-10
+  atol: 1.0e-12
+  collision_tolerance: 1.0e-6
+classical_amr:
+  dorfler_theta: 0.60
+  maximum_refined_fraction: 0.50
+timing:
+  development_repeats: 1
+  full_repeats: 3
+  warmup_cohorts: 1
+statistics:
+  matched_relative_tolerance: 0.05
+  bootstrap_draws: 2000
+  bootstrap_seed: 20260824
+acceptance:
+  invariant_mass_tolerance: 1.0e-10
+  invariant_h1_tolerance: 5.0e-2
+  maximum_full_p95_h1: 0.20
+  minimum_matched_accuracy_coverage: 0.90
+  minimum_matched_accuracy_median_speedup: 1.05
+  minimum_matched_speedup_ci_lower: 1.00
+  minimum_family_matched_coverage: 0.75

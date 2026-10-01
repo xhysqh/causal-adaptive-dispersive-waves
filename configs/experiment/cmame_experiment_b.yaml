@@ -1,0 +1,47 @@
+phase: CMAME-experiment-B
+output_dir: results/cmame_experiment_b
+
+sources:
+  universal_mechanism: results/_manuscript_evidence_20260902/results/cmame_u1_universal_mechanism/full
+  u1_config: configs/experiment/cmame_u1_universal_mechanism.yaml
+  u22_config: configs/experiment/cmame_u22_trait_responsive_stress.yaml
+
+# The only training change in the noncausal ablation is epsilon=0, which makes
+# every prefix carry unit weight. Architecture, seeds, optimizer and splits are
+# inherited verbatim from the frozen U1 configuration.
+noncausal_training:
+  causal_epsilon: 0.0
+
+# Fixed before execution. These points span the two external dispersion
+# coordinates and use the two families with the strongest transient content.
+external_subset:
+  power_orders: [2.2, 3.2]
+  ilw_depths: [0.1, 20.0]
+  families: [two_soliton_collision, smooth_to_oscillatory]
+  group: 0
+  amplitude_scale: 1.75
+  tolerance: 0.0001
+  seed_base: 157000000
+
+spectral_rule:
+  tail_trigger: 0.025
+  aliasing_trigger: 0.010
+  coarsening_tail_limit: 0.003
+  coarsening_aliasing_limit: 0.001
+  stable_prefixes_for_coarsening: 4
+
+acceptance:
+  minimum_source_group_coverage: 0.90
+  minimum_external_terminal_coverage: 0.875
+
+figures:
+  dpi: 220
+  width_inches: 7.1
+  font_size: 8.5
+
+scope: >-
+  Controlled ablation of causal prefix weighting and a frozen current-state
+  spectral-tail rule. Source-domain estimation is evaluated on the independent
+  mCH/BO selection split. External accuracy and work are evaluated on a fixed
+  ILW/power-law subset; all references are post hoc and no external state is
+  used to update weights, margins, thresholds or support radii.

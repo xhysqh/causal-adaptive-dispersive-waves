@@ -1,0 +1,49 @@
+phase: M6.3.4.3_gpu_efficiency_benchmark
+source_m6342_acceptance: results/m6342_shadow_free_safe_rollout/acceptance.json
+source_m6341_calibration: results/m6341_shadow_defect_risk_operator/calibration.json
+source_m6341_checkpoints: results/m6341_shadow_defect_risk_operator
+source_m6332_checkpoints: results/m6332_local_amr_operator
+source_m6333_acceptance: results/m6333_safe_learned_rollout/acceptance.json
+seeds: [11, 29, 47]
+proposal_model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+risk_model: {context_channels: 48, residual_channels: 7, context_hidden: 24, residual_hidden: 12}
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+controller:
+  minimum_dt: 0.00005
+  maximum_dt: 0.0004
+  shrink_factor: 0.5
+  growth_factor: 1.25
+  growth_patience: 2
+  growth_risk_margin: 0.1
+  growth_cfl_fraction: 0.6
+  minimum_direction_cosine: -0.05
+  maximum_relative_energy_drift: 0.02
+  maximum_mass_drift: 1.0e-10
+  enable_direction_gate: false
+  enable_patch_commit: true
+  maximum_patch_migration_relative_h1: 0.02
+  enable_time_growth: true
+benchmark:
+  seed: 63430
+  length: 6.283185307179586
+  dt: 0.0002
+  smoke_points: [32]
+  full_points: [32, 64, 128, 256, 512]
+  families: [smooth, separated, clustered]
+  batch_sizes: [1, 8, 32, 64, 128]
+  smoke_warmup: 1
+  smoke_repeats: 3
+  full_warmup: 20
+  full_repeats: 30
+  closure_steps: 4
+acceptance:
+  maximum_cpu_gpu_relative_h1: 0.000001
+  maximum_mass_drift: 0.0000000001
+  maximum_relative_energy_drift: 0.02
+  maximum_worst_error_ratio: 1.5
+  minimum_batch_throughput_gain: 3.0
+  minimum_matched_speedup: 1.2
+  minimum_acceptance_rate: 0.2
+  minimum_patch_changes: 1
+  minimum_time_growth_events: 1
+  maximum_peak_memory_bytes: 23000000000

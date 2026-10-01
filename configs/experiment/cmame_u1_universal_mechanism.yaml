@@ -1,0 +1,56 @@
+phase: CMAME-U1
+output_dir: results/cmame_u1_universal_mechanism
+next_phase_on_pass: CMAME-KDV-U1_zero_shot_audit
+domain: {length: 6.283185307179586}
+families:
+  modified_camassa_holm: [smooth_control, pure_particle_control, mixed_separated, mixed_clustered]
+  benjamin_ono: [smooth_periodic, single_lorentzian, two_lorentzian, smooth_to_oscillatory]
+splits:
+  train: {groups_per_family: 24, seed: 101000000}
+  validation: {groups_per_family: 6, seed: 102000000}
+  calibration: {groups_per_family: 8, seed: 103000000}
+  selection: {groups_per_family: 8, seed: 104000000}
+development:
+  groups_per_family_cap: 1
+  prefixes: 2
+  points: 32
+  dt: 0.0005
+  tolerance: 0.002
+  reference_refinement: 2
+  minimum_selection_upper_coverage: 0.60
+  minimum_selection_support_coverage: 0.40
+full:
+  prefixes: 8
+  points: 64
+  dt: 0.0005
+  tolerance: 0.001
+  reference_refinement: 4
+metric:
+  version: total_h1_reference_norm_v2
+  minimum_reference_h1_norm: 1.0e-12
+  identity_tolerance: 1.0e-12
+nonlinear_solver: {tolerance: 1.0e-11, maximum_iterations: 80, damping: 1.0}
+reference: {rtol: 1.0e-10, atol: 1.0e-12, collision_tolerance: 1.0e-8}
+model: {hidden: 64, minimum_robust_scale: 0.005}
+training:
+  seeds: [113, 127, 149]
+  epochs: 450
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  gradient_clip: 2.0
+  upper_quantile: 0.95
+  causal_epsilon: 0.25
+calibration:
+  trajectory_coverage: 0.95
+  support_neighbors: 8
+  support_coverage: 0.95
+  maximum_support_anchors: 4096
+  reserve_fraction: 0.10
+acceptance:
+  minimum_selection_upper_coverage: 0.90
+  minimum_selection_support_coverage: 0.80
+scope: >-
+  Fresh mCH--BO training for an equation-neutral mechanism operator. No equation
+  identifier or equation-specific adapter is available to the model. Robust
+  mechanism coordinates, trajectory-group conformal risk and kNN support are
+  frozen before any fresh KdV trajectory is constructed.

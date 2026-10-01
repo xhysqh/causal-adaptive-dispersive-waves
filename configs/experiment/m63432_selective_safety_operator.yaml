@@ -1,0 +1,25 @@
+phase: M6.3.4.3.2_selective_safety_operator
+output_dir: results/m63432_selective_safety_operator
+source_dataset_acceptance: results/m63432_deployment_candidate_dataset/acceptance.json
+source_dataset: results/m63432_deployment_candidate_dataset/deployment_candidate_samples.npz
+seeds: [11, 29, 47]
+device: auto
+model: {input_channels: 32, hidden: 48}
+training: {epochs: 800, learning_rate: 0.0015}
+calibration:
+  ensemble_sigma: 1.0
+  coverage: 0.95
+  support_radius_fraction: 0.75
+  maximum_shadow_defect_ratio: 0.1
+  minimum_direction_cosine: -0.05
+acceptance:
+  minimum_validation_auc: 0.8
+  minimum_audit_auc: 0.8
+  maximum_selector_validation_overaccepts: 0
+  maximum_audit_overaccepts: 0
+  minimum_selector_validation_acceptances: 4
+  minimum_audit_acceptances: 4
+  minimum_audit_acceptance_rate: 0.02
+  minimum_audit_family_coverage: 3
+  minimum_audit_grid_coverage: 3
+  minimum_ensemble_variance: 1.0e-8

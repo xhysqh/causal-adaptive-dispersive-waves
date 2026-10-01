@@ -1,0 +1,14 @@
+name: cubic_forq_mch
+equation: "m_t + alpha * ((u^2-u_x^2)m)_x + gamma*u_x = 0"
+momentum: "m = u-u_xx"
+alpha: 1.0
+gamma: 0.0
+boundary: periodic
+weak_solution:
+  sector: conservative_lax
+  peak_product: arithmetic_average_of_squared_one_sided_derivatives
+  collision_policy: stop_before_collision
+  green_normalization: unit_peak_periodic
+scope:
+  particle_amplitudes: positive
+  post_collision_continuation: false

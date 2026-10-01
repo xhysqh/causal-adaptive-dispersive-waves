@@ -1,0 +1,16 @@
+phase: CMAME-PAPER-STAGE2
+output_dir: results/cmame_stage2_pinn_comparison
+
+showcase_npz: results/_analysis/cmame_f2_v3_full_20260830/results/cmame_f2_closed_loop_paper_evidence/full/closed_loop_showcase.npz
+f2_config: configs/experiment/cmame_f2_closed_loop_paper_evidence.yaml
+mch_baseline_config: configs/experiment/cmame_m22_learned_baselines.yaml
+mch_baseline_output: results/cmame_m22_learned_baselines/full
+bo_baseline_config: configs/experiment/cmame_bo_coordinate_pinn_baseline.yaml
+bo_baseline_output: results/cmame_bo_coordinate_pinn_baseline/full
+
+scope: >-
+  Independent frozen three-member coordinate-PINN baselines and accepted F2
+  causal-adaptive numerical trajectories for mCH and BO. Within each equation,
+  both methods share the same pre-registered showcase, spatial grid, native
+  output times, initial trace, and posthoc reference. No field is perturbed or
+  visually synthesized.

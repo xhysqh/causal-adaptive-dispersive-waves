@@ -1,0 +1,27 @@
+phase: M6.3.3.1_mixed_amr_dataset_and_identifiability
+source_m6330_acceptance: results/m6330_hybrid_amr_foundation/acceptance.json
+dataset:
+  seed: 6331
+  points: 32
+  length: 6.283185307179586
+  dt: 0.0002
+  snapshots_per_group: 3
+  groups: {train: 9, validation: 6, audit: 6}
+refinement:
+  theta: 0.6
+  maximum_fraction: 0.4
+  halo_cells: 1
+  maximum_cfl: 0.45
+identifiability:
+  ridge: 1.0e-4
+acceptance:
+  minimum_samples: 60
+  minimum_groups_per_split: 6
+  minimum_samples_per_family_split: 6
+  minimum_signal_to_reference_floor: 100.0
+  maximum_ridge_to_train_mean_ratio: 0.9
+  minimum_refinement_mask_recall: 0.5
+  minimum_cross_grid_shape_correlation: 0.3
+  minimum_marked_energy_fraction: 0.3
+  minimum_theta_satisfaction_fraction: 0.75
+  maximum_active_fraction: 0.4

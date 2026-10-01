@@ -1,0 +1,94 @@
+seed: 20260720
+phase05_acceptance: results/reference_cross_validation/acceptance.json
+a1_acceptance: results/a1_defect_learning/acceptance.json
+output_dir: results/a2_step_consistent_defect
+scale_audit_dir: results/a2_scale_audit
+domain: {x_min: -10.0, length: 20.0}
+orders:
+  temporal_p: 2.0
+  spatial_q: 2.0
+  use_observed: false
+reference:
+  fine_ratio: 4
+  method: DOP853
+  rtol: 1.0e-10
+  atol: 1.0e-12
+  dealias: true
+  filter: false
+paired_design:
+  coarse_points: [64, 128]
+  time_steps: [0.004, 0.002, 0.001]
+  scenarios:
+    gaussian:
+      final_time: 0.16
+      initial: {kind: gaussian, amplitude: 0.5, center: -1.0, width: 1.2}
+    single_peakon:
+      final_time: 0.3
+      initial: {kind: single_peakon, amplitude: 0.8, center: -1.0, width: 1.0}
+    double_peakon:
+      final_time: 3.0
+      initial:
+        kind: multi_peakon
+        amplitudes: [1.2, 0.5]
+        centers: [-1.0, 1.0]
+        width: 1.0
+  equation: {k1: 0.0, k2: 1.0, k: 1}
+  interaction_half_window: 0.3
+model:
+  hidden_channels: 24
+  blocks: 3
+  kernel_size: 5
+  normalization: group
+features:
+  channels:
+    - u_previous
+    - u_current
+    - momentum_current
+    - d1_current
+    - d2_current
+    - baseline_next
+    - baseline_momentum_next
+    - baseline_residual
+  parameters: [k1, k2, k, h, dt, length, points]
+label: {kind: direct_defect}
+training:
+  seeds: [11, 22, 33]
+  epochs: 30
+  batch_size: 128
+  samples_per_trajectory_per_epoch: 256
+  learning_rate: 0.002
+  weight_decay: 1.0e-6
+  gradient_clip: 1.0
+  rollout_lengths: [2, 4, 8]
+evaluation:
+  # These are disjoint from the paired training dt/grid values.
+  unseen_dt: 0.003
+  unseen_grid_points: 96
+  rollout_final_time: 0.4
+loss:
+  supervised: 1.0
+  step_consistency: 0.1
+  rollout: 0.05
+  trust: 0.01
+trust_region:
+  training_rho: 0.5
+  evaluation_rhos: [0.1, 0.25, 0.5, 1.0]
+  epsilon: 1.0e-12
+ablations:
+  - a1_raw
+  - a1_trust
+  - temporal_scale_only
+  - dual_head
+  - dual_head_trust
+  - dual_head_trust_consistency
+acceptance:
+  maximum_unseen_dt_one_step_ratio: 10.0
+  maximum_unseen_grid_one_step_ratio: 2.0
+  minimum_ood_not_worse: 5
+  minimum_ood_strictly_better: 4
+  maximum_seed_direction_failures: 0
+  maximum_energy_drift: 1.0
+  maximum_spurious_peak_increase: 1
+  maximum_gate_trigger_rate: 0.8
+  maximum_component_cancellation_ratio: 10.0
+  require_finite: true

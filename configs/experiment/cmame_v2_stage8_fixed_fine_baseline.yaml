@@ -1,0 +1,35 @@
+phase: CMAME-V2-stage-8-fixed-fine-baseline
+output_dir: results/cmame_v2_stage8_fixed_fine_baseline
+fixed_spatial_grid: true
+enable_verified_coarsening: false
+stage2_config: configs/experiment/cmame_v2_predictive_risk.yaml
+stage4_config: configs/experiment/cmame_v2_stage4_safety_shielded_controller.yaml
+source_manifest: results/cmame_v2_predictive_risk/full/frozen_v2_predictive_risk_manifest.json
+domain: {length: 6.283185307179586}
+development:
+  minimum_points: 64
+  points: 64
+  maximum_points: 64
+  decisions: 8
+  dt: 0.0005
+  tolerance: 0.01
+  reference_refinement: 2
+full:
+  minimum_points: 128
+  points: 128
+  maximum_points: 128
+  decisions: 24
+  dt: 0.0005
+  tolerance: 0.01
+  reference_refinement: 4
+showcase:
+  modified_camassa_holm: {family: mixed_separated, seed: 205020000}
+  benjamin_ono: {family: two_lorentzian, seed: 205520000}
+acceptance:
+  maximum_terminal_relative_h1_error: 0.10
+  require_deterministic_admissibility: true
+scope: >-
+  Fixed spatial-resolution comparator for the stage-7 interaction-rich
+  trajectories. The grid is held at N=128 in full mode; time-step candidates
+  remain subject to the same deterministic checks. It is an accuracy/work
+  comparator, not an oracle and not a training or calibration source.

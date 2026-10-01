@@ -1,0 +1,49 @@
+phase: CMAME-M2.2
+output_dir: results/cmame_m22_learned_baselines
+next_phase_on_pass: CMAME-M2.3_unified_mathematical_comparison
+m20_output_dir: results/cmame_m20_frozen_benchmark_registry
+m21_output_dir: results/cmame_m21_classical_baselines
+m20_config: configs/experiment/cmame_m20_frozen_benchmark_registry.yaml
+m21_config: configs/experiment/cmame_m21_classical_baselines.yaml
+
+domain:
+  length: 6.283185307179586
+  gamma: 0.0
+
+ensemble_seeds: [11, 29, 47]
+training_seed_base: 31000000
+validation_seed_base: 32000000
+families: [smooth_periodic, smooth_to_sharp, single_periodic_peakon]
+
+development:
+  points: 16
+  alphas: [0.75, 1.25]
+  times: [0.004, 0.008]
+  train_groups_per_alpha: 2
+  validation_groups_per_alpha: 1
+  epochs: 20
+  batch_size: 8
+
+full:
+  points: 32
+  alphas: [0.5, 1.0, 1.5]
+  times: [0.004, 0.01, 0.02]
+  train_groups_per_alpha: 8
+  validation_groups_per_alpha: 3
+  epochs: 180
+  batch_size: 24
+
+optimizer:
+  learning_rate: 0.001
+  pinn_physics_weight: 0.0001
+
+models:
+  wang_yan_pinn: {hidden: 64, layers: 4, modes: 4}
+  fno: {width: 32, modes: 12, layers: 4}
+
+acceptance:
+  maximum_validation_mse: 0.001
+  maximum_audit_relative_h1: 2.0
+  maximum_prediction_mass_drift: 1.0
+  require_three_seed_ensemble: true
+  require_both_learned_methods: true

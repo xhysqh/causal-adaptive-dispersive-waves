@@ -1,0 +1,73 @@
+phase: CMAME-M2.5
+output_dir: results/cmame_m25_frozen_mathematical_benchmark
+next_phase_on_pass: CMAME-M3_manuscript_and_k2_extension
+
+prerequisites:
+  m13_acceptance: results/cmame_m13_local_compatible_amr/full/acceptance.json
+  m12_manifest: results/cmame_m12_conservative_adaptive_controller/full/frozen_controller_manifest.json
+  m20_acceptance: results/cmame_m20_frozen_benchmark_registry/full/acceptance.json
+  m21_acceptance: results/cmame_m21_classical_baselines/full/acceptance.json
+  m22_acceptance: results/cmame_m22_learned_baselines/full/acceptance.json
+  m24_acceptance: results/cmame_m24_causal_representation/full/acceptance.json
+  m24_manifest: results/cmame_m24_causal_representation/full/frozen_causal_router_manifest.json
+
+configs:
+  m21: configs/experiment/cmame_m21_classical_baselines.yaml
+  m22: configs/experiment/cmame_m22_learned_baselines.yaml
+  m24: configs/experiment/cmame_m24_causal_representation.yaml
+
+domain: {length: 6.283185307179586, gamma: 0.0}
+families:
+  - {name: smooth_periodic, reference: reference_fourier_dop853, methods: [conservative_finite_difference, fourier_ifrk4, residual_space_time_amr, wang_yan_pinn, fno]}
+  - {name: smooth_to_sharp, reference: reference_fourier_dop853, methods: [conservative_finite_difference, fourier_ifrk4, residual_space_time_amr, fno]}
+  - {name: single_periodic_peakon, reference: reference_particle_dop853, methods: [particle_dop853, wang_yan_pinn]}
+  - {name: separated_multipeakon, reference: reference_particle_dop853, methods: [particle_dop853]}
+  - {name: clustered_multipeakon, reference: reference_particle_dop853, methods: [particle_dop853]}
+  - {name: mixed_field_peakon, reference: reference_fourier_dop853, methods: [residual_space_time_amr]}
+
+development:
+  alphas: [1.0]
+  tolerances: [0.002, 0.0005]
+  final_times: [0.004, 0.008]
+  seeds_per_cell: 1
+  seed_base: 35000000
+  coarse_points: 16
+  initial_dt: 0.0005
+  reference_floor_points: [32, 48]
+  enforce_claims: false
+full:
+  alphas: [0.5, 1.0, 1.5]
+  tolerances: [0.002, 0.00075, 0.00025]
+  final_times: [0.008, 0.02]
+  seeds_per_cell: 5
+  seed_base: 36000000
+  coarse_points: 32
+  initial_dt: 0.0005
+  reference_floor_points: [64, 96]
+  enforce_claims: true
+
+reference:
+  refinement: 4
+  rtol: 1.0e-10
+  atol: 1.0e-12
+  collision_tolerance: 1.0e-8
+  machine_floor_multiplier: 100.0
+
+statistics:
+  resampling_unit: trajectory_group
+  bootstrap_samples: 2000
+  confidence: 0.95
+  holm_alpha: 0.05
+  practical_tie_log10: 0.02
+
+acceptance:
+  minimum_tolerance_coverage: 0.90
+  minimum_family_noninferiority_fraction: 0.80
+  minimum_general_improvement_fraction: 0.60
+  maximum_general_median_resolved_ratio: 0.95
+  maximum_bootstrap_log10_upper: 0.0
+  maximum_invariant_drift: 1.0e-10
+  require_all_families: true
+
+figures: {dpi: 600, formats: [pdf, png]}
+

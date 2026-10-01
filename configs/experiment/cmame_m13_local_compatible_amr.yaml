@@ -1,0 +1,61 @@
+phase: CMAME-M1.3
+output_dir: results/cmame_m13_local_compatible_amr
+m12_output_dir: results/cmame_m12_conservative_adaptive_controller
+next_phase_on_pass: CMAME-M2_mathematical_benchmark_suite
+
+domain:
+  length: 6.283185307179586
+  gamma: 0.0
+
+development:
+  families: [smooth_control, pure_particle_control, mixed_separated, mixed_clustered]
+  alphas: [1.0]
+  tolerances: [0.002, 0.0005]
+  seeds_per_cell: 1
+  seed_base: 12100000
+  coarse_points: 32
+  initial_dt: 0.0005
+  final_time: 0.002
+
+full:
+  families: [smooth_control, pure_particle_control, mixed_separated, mixed_clustered]
+  alphas: [0.5, 1.0, 1.5]
+  tolerances: [0.002, 0.00075, 0.00025]
+  seeds_per_cell: 2
+  seed_base: 13100000
+  coarse_points: 64
+  initial_dt: 0.0005
+  final_time: 0.008
+
+nonlinear_solver:
+  tolerance: 1.0e-11
+  maximum_iterations: 80
+  damping: 1.0
+
+reference:
+  refinement: 4
+  rtol: 1.0e-10
+  atol: 1.0e-12
+  collision_tolerance: 1.0e-8
+
+controller:
+  reserve_fraction: 0.1
+  dorfler_theta: 0.65
+  maximum_patch_fraction: 0.75
+  halo_cells: 1
+  particle_halo_cells: 2
+  coarsen_hysteresis: 2
+  maximum_migration_budget_fraction: 0.2
+  minimum_dt: 0.0000625
+  maximum_dt: 0.001
+  time_growth_limit: 1.5
+  time_shrink_limit: 0.5
+  maximum_rejections: 8
+
+acceptance:
+  minimum_terminal_tolerance_coverage: 0.75
+  minimum_paired_monotone_fraction: 0.65
+  maximum_median_ratio_to_uniform_fine: 1.05
+  maximum_invariant_drift: 1.0e-10
+  maximum_migration_defect: 1.0e-10
+  maximum_reflux_rate_defect: 1.0e-9

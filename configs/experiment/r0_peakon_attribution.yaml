@@ -1,0 +1,20 @@
+seed: 20260804
+source_dir: results/b03_multipeakon_reference
+output_dir: results/r0_peakon_attribution
+
+decomposition:
+  rank_tolerance: 1.0e-12
+  coefficient_signal_epsilon: 1.0e-12
+
+acceptance:
+  minimum_family_median_explained_fraction: 0.50
+  maximum_family_maximum_gram_condition: 1.0e8
+  minimum_family_full_rank_fraction: 1.0
+  maximum_relative_orthogonality_error: 1.0e-10
+  minimum_family_median_coefficient_signal_to_reference_floor: 10.0
+  minimum_family_median_amplitude_cross_grid_cosine: 0.80
+  minimum_family_median_position_cross_grid_cosine: 0.80
+  minimum_passing_discovery_families: 2
+  minimum_passing_ood_families: 1
+  minimum_replicated_families: 1
+

@@ -1,0 +1,57 @@
+phase: CMAME-F2
+output_dir: results/cmame_f2_closed_loop_paper_evidence
+f1_output_dir: results/cmame_f101_metric_repair
+f1_config: configs/experiment/cmame_f101_metric_repair.yaml
+
+domain: {length: 6.283185307179586}
+showcase:
+  # Fixed before the F2 run; no posthoc outcome-based case selection.
+  modified_camassa_holm:
+    family: mixed_clustered
+    seed: 91012003
+  benjamin_ono:
+    family: two_lorentzian
+    seed: 91512003
+
+development:
+  decisions: 2
+  points: 32
+  maximum_points: 64
+  dt: 0.0005
+  tolerance: 0.002
+  visualization_points: 96
+  reference_refinement: 2
+  maximum_bo_invariant_drift: 2.0e-4
+full:
+  decisions: 32
+  points: 64
+  maximum_points: 256
+  dt: 0.0005
+  tolerance: 0.001
+  visualization_points: 256
+  reference_refinement: 4
+  maximum_bo_invariant_drift: 2.0e-5
+
+nonlinear_solver: {tolerance: 1.0e-11, maximum_iterations: 80, damping: 1.0}
+reference: {rtol: 1.0e-10, atol: 1.0e-12, collision_tolerance: 1.0e-8}
+calibration: {reserve_fraction: 0.10}
+figures:
+  # A shorter run can still be plotted, but is marked diagnostic rather than
+  # silently promoted to a long-horizon mechanism claim.
+  minimum_publication_decisions: 32
+  mch_indicator_dorfler_theta: 0.60
+learning_evidence:
+  # Fractions are fixed before looking at selection labels.  Intermediate
+  # panels are training replays; the final panel is the operational ensemble.
+  checkpoint_fractions: [0.0, 0.10, 0.50, 1.0]
+acceptance:
+  maximum_mch_invariant_drift: 1.0e-10
+  maximum_bo_invariant_drift: 2.0e-5
+  maximum_terminal_relative_h1: 1.0
+
+scope: >-
+  Frozen F1.0.1 prospective mechanism with genuinely committed actions on two
+  pre-registered fresh showcase trajectories.  Analytical indicators and the
+  frozen mechanism are online; refined references are computed only after the
+  complete trajectory has been committed.  This stage is paper evidence, not
+  a new threshold-selection experiment.

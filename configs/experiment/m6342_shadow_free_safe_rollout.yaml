@@ -1,0 +1,39 @@
+phase: M6.3.4.2_shadow_free_safe_rollout
+source_m6341_acceptance: results/m6341_shadow_defect_risk_operator/acceptance.json
+source_m6341_calibration: results/m6341_shadow_defect_risk_operator/calibration.json
+source_m6341_checkpoints: results/m6341_shadow_defect_risk_operator
+source_m6332_checkpoints: results/m6332_local_amr_operator
+source_m6333_acceptance: results/m6333_safe_learned_rollout/acceptance.json
+seeds: [11, 29, 47]
+device: auto
+proposal_model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+risk_model: {context_channels: 48, residual_channels: 7, context_hidden: 24, residual_hidden: 12}
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+controller:
+  minimum_dt: 0.00005
+  shrink_factor: 0.5
+  minimum_direction_cosine: -0.05
+  maximum_relative_energy_drift: 0.02
+  maximum_mass_drift: 1.0e-10
+  enable_direction_gate: false
+rollout:
+  length: 6.283185307179586
+  initial_dt: 0.0002
+  final_time: 0.0004
+  calibration_seeds: [73420, 73421, 73422, 73423]
+  audit_seeds: [73424, 73425, 73426, 73427]
+  families: [smooth, separated, clustered]
+  points: [32, 64]
+acceptance:
+  minimum_learned_steps: 1
+  minimum_fallback_steps: 1
+  maximum_accepted_shadow_calls: 0
+  maximum_posthoc_shadow_defect_ratio: 0.1
+  minimum_posthoc_direction_cosine: -0.05
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_energy_drift: 0.02
+  maximum_median_error_ratio_to_classical: 1.2
+  maximum_worst_error_ratio_to_classical: 1.5
+  maximum_cross_grid_relative_h1: 0.2
+  maximum_step_growth: 1.0
+  maximum_runtime_overhead_ratio: 10.0

@@ -1,0 +1,33 @@
+phase: M6_mch_pinn_cnn_adaptive_operator
+source_m5_acceptance: results/m5_safe_adaptive_rollout/acceptance.json
+source_m4_acceptance: results/m4_mch_minimal_atlas/acceptance.json
+source_m3_config: configs/experiment/m3_mch_causal_dataset.yaml
+source_m5_config: configs/experiment/m5_safe_adaptive_rollout.yaml
+seeds: [11, 29, 47]
+model:
+  hidden: 8
+  device: auto
+physics:
+  weak_modes: 4
+  localized_tests: 4
+closed_loop:
+  dt: 0.005
+  steps: 3
+  oracle_substeps: 8
+  cases:
+    - {scenario: smooth_sine_train, points: 64, role: train}
+    - {scenario: particle_triple_train, points: 63, role: train}
+    - {scenario: mixed_validation, points: 63, role: calibration}
+    - {scenario: particle_four_ood, points: 63, role: audit}
+calibration:
+  epochs: 200
+  learning_rate: 0.02
+  coverage: 0.8
+rollout:
+  final_time: 0.01
+acceptance:
+  maximum_mass_drift: 1.0e-10
+  maximum_energy_drift: 1.0e-10
+  minimum_calibration_coverage: 0.66
+  maximum_learned_step_factor: 1.0
+  minimum_closed_loop_samples: 12

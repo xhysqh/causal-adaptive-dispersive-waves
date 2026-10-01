@@ -1,0 +1,86 @@
+seed: 20260804
+source_b02_acceptance: results/b02_geometry_excitation/acceptance.json
+output_dir: results/b03_multipeakon_reference
+domain: {x_min: -10.0, length: 20.0}
+equation: {k1: 0.0, k2: 1.0, k: 1}
+
+particle_reference:
+  output_dt: 0.002
+  method: DOP853
+  collision_tolerance: 1.0e-9
+  master: {rtol: 1.0e-11, atol: 1.0e-13}
+  shadow: {rtol: 1.0e-13, atol: 1.0e-15}
+
+fourier_reference:
+  master_points: 256
+  shadow_points: 512
+  method: DOP853
+  rtol: 1.0e-10
+  atol: 1.0e-12
+  dealias: true
+  filter: false
+
+design:
+  coarse_points: [32, 64, 128]
+  time_steps: [0.004, 0.008, 0.016, 0.032]
+  maximum_samples_per_trajectory: 96
+  high_angle_quantile: 0.75
+  required_families: [single_peakon, double_peakon, triple_peakon]
+  required_splits: [discovery, ood]
+  scenarios:
+    single_discovery:
+      family: single_peakon
+      split: discovery
+      final_time: 0.16
+      initial: {kind: single_peakon, amplitude: 0.8, center: -1.2, width: 1.0}
+    single_ood:
+      family: single_peakon
+      split: ood
+      final_time: 0.16
+      initial: {kind: single_peakon, amplitude: 1.15, center: 0.65, width: 1.0}
+    double_discovery:
+      family: double_peakon
+      split: discovery
+      final_time: 0.24
+      initial:
+        {kind: multi_peakon, amplitudes: [1.25, 0.55],
+         centers: [-1.1, 1.0], width: 1.0}
+    double_ood:
+      family: double_peakon
+      split: ood
+      final_time: 0.24
+      initial:
+        {kind: multi_peakon, amplitudes: [1.45, 0.4],
+         centers: [-0.75, 0.7], width: 1.0}
+    triple_discovery:
+      family: triple_peakon
+      split: discovery
+      final_time: 0.20
+      initial:
+        {kind: multi_peakon, amplitudes: [1.1, 0.65, 0.3],
+         centers: [-1.4, -0.1, 1.2], width: 1.0}
+    triple_ood:
+      family: triple_peakon
+      split: ood
+      final_time: 0.20
+      initial:
+        {kind: multi_peakon, amplitudes: [1.35, 0.52, 0.22],
+         centers: [-1.0, 0.05, 0.9], width: 1.0}
+
+acceptance:
+  maximum_particle_momentum_drift: 1.0e-10
+  maximum_particle_hamiltonian_drift: 1.0e-10
+  maximum_single_position_error: 1.0e-10
+  maximum_single_amplitude_error: 1.0e-10
+  maximum_particle_tolerance_floor: 1.0e-6
+  minimum_fourier_improving_group_fraction: 0.5
+  maximum_log_exp_relative_error: 1.0e-10
+  minimum_antipodal_margin: 0.1
+  maximum_high_angle_median_baseline_relative_h1: 0.75
+  minimum_peakon_high_angle_median_angle: 1.0e-3
+  minimum_peakon_high_angle_median_relative_signal: 1.0e-3
+  minimum_peakon_signal_to_particle_floor: 10.0
+  minimum_observable_discovery_families: 1
+  minimum_observable_ood_families: 1
+  minimum_replicated_families: 1
+

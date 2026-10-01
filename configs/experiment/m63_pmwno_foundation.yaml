@@ -1,0 +1,21 @@
+phase: M6.3.0_C_PMWNO_foundation
+source_m62_acceptance: results/m62_post_training_rollout/acceptance.json
+source_phase0_freeze: docs/phase0_freeze_manifest.json
+model:
+  maximum_atoms: 8
+  maximum_clusters: 8
+  field_channels: 4
+  parameter_channels: 11
+  hidden: 16
+  wavelet_levels: 2
+audit:
+  seed: 630
+  points: [64, 128]
+  length: 6.283185307179586
+  translation: 1.173
+acceptance:
+  maximum_codec_error: 1.0e-11
+  maximum_wavelet_error: 1.0e-12
+  maximum_equivariance_error: 1.0e-11
+  maximum_mass_tangent_error: 1.0e-12
+  maximum_cross_grid_error: 1.0e-11

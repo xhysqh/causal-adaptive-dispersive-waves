@@ -1,0 +1,40 @@
+phase: M6.3.3.3_ensemble_calibration_and_safe_rollout
+source_m6332_acceptance: results/m6332_local_amr_operator/acceptance.json
+source_m6332_checkpoints: results/m6332_local_amr_operator
+source_dataset: results/m6331_mixed_amr_dataset/mixed_amr_causal_samples.npz
+seeds: [11, 29, 47]
+device: auto
+model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+calibration: {coverage: 0.9, raw_floor: 0.0001, safety_factor: 1.25, tolerance_multiplier: 1.05}
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+controller:
+  initial_dt: 0.0002
+  minimum_dt: 0.00005
+  shrink_factor: 0.5
+  maximum_shadow_increment_ratio: 0.1
+  maximum_composite_energy_drift: 0.02
+  minimum_direction_cosine: -0.05
+  minimum_shadow_blend: 0.0625
+rollout:
+  final_time: 0.0008
+  scenarios:
+    - {name: smooth_n32, family: smooth, points: 32, seed: 100}
+    - {name: separated_n32, family: separated, points: 32, seed: 113}
+    - {name: clustered_n32, family: clustered, points: 32, seed: 102}
+    - {name: smooth_n64, family: smooth, points: 64, seed: 100}
+    - {name: separated_n64, family: separated, points: 64, seed: 113}
+    - {name: clustered_n64, family: clustered, points: 64, seed: 102}
+acceptance:
+  minimum_validation_coverage: 0.9
+  minimum_audit_coverage: 0.8
+  minimum_worst_group_coverage: 0.65
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_energy_drift: 0.02
+  maximum_median_error_ratio_to_classical: 1.2
+  maximum_worst_error_ratio_to_classical: 1.5
+  maximum_cross_grid_relative_h1: 0.2
+  minimum_learned_steps: 1
+  minimum_fallback_steps: 1
+  minimum_reduced_steps: 1
+  maximum_step_growth: 1.0
+  required_ablations: 9

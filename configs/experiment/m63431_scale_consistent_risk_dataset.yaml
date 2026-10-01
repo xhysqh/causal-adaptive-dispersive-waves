@@ -1,0 +1,42 @@
+phase: M6.3.4.3.1_scale_consistent_risk_dataset
+next_phase: M6.3.4.3.1_deployment_risk_recalibration
+output_dir: results/m63431_scale_consistent_risk_dataset
+source_m6333_acceptance: results/m6333_safe_learned_rollout/acceptance.json
+source_m6332_checkpoints: results/m6332_local_amr_operator
+seeds: [11, 29, 47]
+device: auto
+model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+dataset:
+  seed: 63431
+  length: 6.283185307179586
+  dts: [0.00005, 0.0001, 0.0002, 0.00025]
+  points: [32, 64, 128]
+  snapshots_per_group: 4
+  groups: {train: 12, validation: 6, audit: 6}
+  risk_feature_version: scale_consistent_v2
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+controller:
+  minimum_dt: 0.00005
+  shrink_factor: 0.5
+  maximum_shadow_increment_ratio: 0.1
+  maximum_composite_energy_drift: 0.02
+  minimum_direction_cosine: -0.05
+  minimum_shadow_blend: 0.0625
+  enable_scale_consistent_proposal: true
+  proposal_reference_dt: 0.0002
+identifiability: {ridge_candidates: [0.001, 0.01, 0.1, 1.0, 10.0, 100.0]}
+acceptance:
+  minimum_samples: 800
+  minimum_groups_per_split: 6
+  minimum_family_samples_per_split: 48
+  minimum_safe_weight_categories: 3
+  minimum_defect_coefficient_of_variation: 0.2
+  minimum_direction_standard_deviation: 0.05
+  minimum_residual_defect_correlation: 0.2
+  maximum_ridge_to_strong_baseline_ratio: 1.0
+  minimum_safe_weight_ranking_auc: 0.75
+  minimum_cross_grid_defect_correlation: 0.2
+  maximum_raw_mass_drift: 1.0e-10
+  unsafe_energy_example_threshold: 0.02
+  require_unsafe_energy_examples: false
+  maximum_scaled_to_raw_dt_sensitivity: 0.8

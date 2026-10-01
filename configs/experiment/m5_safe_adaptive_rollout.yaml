@@ -1,0 +1,49 @@
+phase: M5_safe_adaptive_rollout
+source_m4_acceptance: results/m4_mch_minimal_atlas/acceptance.json
+source_m3_config: configs/experiment/m3_mch_causal_dataset.yaml
+detector_config: configs/experiment/m2_mch_atlas.yaml
+seeds: [11, 29, 47]
+model:
+  hidden: 8
+rollout:
+  final_time: 0.04
+  reference_dt: 0.0025
+  initial_dt: 0.01
+  minimum_dt: 0.0025
+  maximum_dt: 0.01
+  relative_tolerance: 5.0e-3
+  safety_factor: 0.9
+  maximum_growth: 1.5
+  minimum_shrink: 0.5
+  maximum_retries: 8
+gate:
+  maximum_correction_ratio: 0.5
+  maximum_correction_to_embedded_error: 1.0e+6
+  maximum_relative_ensemble_uncertainty: 1.0
+  minimum_embedded_alignment: -0.25
+  member_maximum_relative_ensemble_uncertainty: 0.75
+  minimum_confidence: 0.45
+  maximum_ood_distance: 6.0
+  maximum_measure_purity: 1.0e-6
+  minimum_separation_cells: 1.5
+  maximum_projection_scale_change: 0.25
+  maximum_spectral_tail_factor: 4.0
+  spectral_tail_fraction: 0.25
+  backtracking: [1.0, 0.5, 0.25, 0.125]
+cases:
+  - {scenario: particle_double_validation, split: validation, points: 63}
+  - {scenario: particle_cluster_validation, split: validation, points: 255}
+  - {scenario: mixed_validation, split: validation, points: 63}
+  - {scenario: particle_four_ood, split: test_ood, points: 63}
+  - {scenario: particle_cluster_ood, split: test_ood, points: 255}
+  - {scenario: smooth_random_ood, split: test_ood, points: 96}
+acceptance:
+  maximum_mass_drift: 1.0e-10
+  maximum_energy_drift: 1.0e-10
+  validation_median_error_ratio_max: 1.0
+  ood_median_error_ratio_max: 1.0
+  ood_worst_error_ratio_max: 1.0
+  required_relative_gain: 1.0e-3
+  maximum_atlas_switches: 2
+  minimum_full_network_acceptances: 1
+  minimum_ablation_margin: 1.0e-6

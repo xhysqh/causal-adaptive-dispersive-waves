@@ -1,0 +1,132 @@
+phase: M6.3.4.3.3.5.2.4-R2.1_local_scale_boundary_repair
+output_dir: results/m63433524r21_local_scale_repair
+dataset_file: development_risk_samples.npz
+dataset_acceptance_file: development_dataset_acceptance.json
+acceptance_file: selection_acceptance.json
+calibration_file: selection_calibration.json
+implementation_manifest_file: selection_implementation_manifest.json
+next_phase: M6.3.4.3.3.5.2.4-R2.1_fixed_gate_ltt
+scope: >-
+  Development-only separated periodic pre-collision local scale-boundary repair.
+  New seeds are disjoint from .5.2.4 and R2. Thresholds are selected only on
+  the sequestered policy-selection split; no LTT is generated at this stage.
+
+source_m63433521_acceptance: results/m63433521_paired_scale_shadow/acceptance.json
+source_scale_budget: results/m63433521_paired_scale_shadow/scale_error_budget.json
+source_m63433524_acceptance: results/m63433524_closed_loop_group_certificate/acceptance.json
+source_m63433524_calibration: results/m63433524_closed_loop_group_certificate/calibration.json
+source_m63433524_checkpoints: results/m63433524_closed_loop_group_certificate
+source_m63433524_dataset: results/m63433524_closed_loop_group_certificate/closed_loop_risk_samples.npz
+source_m6332_checkpoints: results/m6332_local_amr_operator
+source_m6341_checkpoints: results/m63431_deployment_risk_recalibration
+source_m6333_acceptance: results/m6333_safe_learned_rollout/acceptance.json
+seeds: [11, 29, 47]
+proposal_model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+risk_model: {context_channels: 48, residual_channels: 7, context_hidden: 32, residual_hidden: 16, context_correction_bound: 1.0}
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+controller:
+  selected_weight: 0.0625
+  minimum_dt: 0.00005
+  maximum_dt: 0.0004
+  maximum_relative_energy_drift: 0.02
+  maximum_mass_drift: 1.0e-10
+  maximum_patch_migration_relative_h1: 0.02
+  maximum_patch_migration_to_step_increment: 0.1
+  proposal_reference_dt: 0.0002
+
+dataset:
+  seed: 556343524
+  length: 6.283185307179586
+  family: separated
+  points: [32, 64, 128]
+  dts: [0.00005, 0.0001, 0.0002]
+  maximum_horizon: 8
+  labelled_starts_per_trajectory: 8
+  groups_per_cell: {train: 90, validation: 30, calibration: 60, policy_selection: 90}
+  # Label-free oversampling is restricted to the observed blind spot.  It
+  # creates new trajectories; policy-selection labels from R2 are never reused.
+  targeted_groups_per_cell:
+    "32:5e-05": {train: 240, validation: 80, calibration: 120, policy_selection: 180}
+  geometry_bins: [balanced, skewed]
+  amplitude_ratio_threshold: 1.25
+  maximum_geometry_seed_attempts: 80
+behaviour_policy:
+  policies: [bootstrap_gate, mixed, stress]
+  mixed_candidate_probability: 0.5
+  stress_period: 5
+  stress_candidate_steps: [0, 3]
+label:
+  minimum_direction_cosine: -0.05
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_energy_drift: 0.02
+  maximum_cfl: 0.45
+  maximum_patch_migration_to_step_increment: 0.1
+  exit_threshold: 1.0
+  severe_threshold: 2.0
+model:
+  input_channels: 52
+  hidden: 64
+  maximum_horizon: 8
+  embedding_channels: 8
+  conservative_scale_residual: true
+  residual_bound: 2.0
+training:
+  seeds: [11, 29, 47]
+  epochs: 1800
+  learning_rate: 0.001
+  internal_validation_fraction: 0.15
+  split_seed: 6343352421
+  first_exit_weight: 1.0
+  patience: 30
+  evaluation_interval: 10
+  targeted_boundary_cells: ["32:5e-05"]
+  targeted_cell_weight: 2.5
+  boundary_ranking_weight: 0.75
+  boundary_margin: 0.08
+risk_control:
+  deployment_horizon: 1
+  advisory_horizons: [2, 4, 8]
+  candidate_quantile_step: 0.01
+  candidate_quantile_maximum: 0.95
+  ltt_mode: trajectory_group
+  selection_split: policy_selection
+  selection_only: true
+  require_zero_unsafe_selection: true
+  policy: Shared K1 score with nonnegative local scale residual; policy-selection only.
+risk_certificate:
+  global_alpha: 0.02
+  global_delta: 0.05
+  cell_alpha: 0.20
+  cell_delta_total: 0.05
+acceptance:
+  minimum_rows: 22240
+  minimum_trajectories_per_cell_split: 30
+  maximum_validation_nll_to_baseline: 1.10
+  minimum_validation_auc: 0.60
+  maximum_log_severity_mae: 0.65
+  minimum_calibration_coverage: 0.80
+  minimum_worst_cell_calibration_coverage: 0.60
+  minimum_ltt_safe_opportunities_per_cell: 20
+  minimum_ltt_accepted_groups_per_cell: 10
+  minimum_ltt_groups_per_cell: 90
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_energy_drift: 0.02
+
+final_ltt:
+  seed: 656343524
+  length: 6.283185307179586
+  family: separated
+  points: [32, 64, 128]
+  dts: [0.00005, 0.0001, 0.0002]
+  maximum_horizon: 8
+  labelled_starts_per_trajectory: 8
+  groups_per_cell: 600
+  geometry_bins: [balanced, skewed]
+  amplitude_ratio_threshold: 1.25
+  maximum_geometry_seed_attempts: 80
+  policy_global_alpha: 0.02
+  learned_global_alpha: 0.02
+  policy_cell_alpha: 0.05
+  learned_cell_alpha: 0.05
+  cell_delta_total: 0.05
+  minimum_learned_groups_per_cell: 104

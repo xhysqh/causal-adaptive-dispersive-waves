@@ -1,0 +1,53 @@
+phase: M0_M1
+seed: 20260805
+equation_config: configs/equation/modified_ch_conservative.yaml
+periodic_length: 20.0
+particle:
+  final_time: 0.25
+  output_dt: 0.005
+  master_rtol: 1.0e-11
+  master_atol: 1.0e-13
+  shadow_rtol: 1.0e-9
+  shadow_atol: 1.0e-11
+  collision_tolerance: 1.0e-6
+smooth_baseline:
+  grid_points: 128
+  dt: 0.0005
+  steps: 20
+  convergence_grid_points: 64
+  convergence_final_time: 0.04
+  convergence_dts: [0.004, 0.002, 0.001, 0.0005]
+independent_conservative:
+  grid_points: 48
+  dt: 0.002
+  steps: 10
+  nonlinear_tolerance: 1.0e-11
+  time_convergence_grid_points: 32
+  time_convergence_final_time: 0.04
+  time_convergence_dts: [0.004, 0.002, 0.001, 0.0005]
+spatial_convergence:
+  grid_points: [32, 64, 128, 256]
+  rollout_grid_points: [32, 64, 128]
+  spectral_reference_points: 256
+  final_time: 0.04
+cross_representation:
+  grid_points: [63, 127, 255]
+  positions: [0.73, 2.41, 5.17]
+  amplitudes: [1.0, 0.7, 0.4]
+  test_modes: [0, 1, 2, 3, 5]
+acceptance:
+  particle_relative_h1_drift_max: 1.0e-9
+  particle_master_shadow_position_max: 1.0e-8
+  weak_residual_abs_max: 1.0e-10
+  smooth_mass_drift_max: 1.0e-12
+  smooth_energy_drift_max: 1.0e-12
+  smooth_self_convergence_order_min: 1.8
+  independent_invariant_drift_max: 1.0e-10
+  independent_nonlinear_residual_max: 1.0e-10
+  independent_time_order_min: 1.8
+  independent_projected_agreement_max: 1.0e-8
+  spatial_order_min: 1.8
+  spatial_rollout_order_min: 1.8
+  cross_measure_action_error_max: 1.0e-11
+  cross_weak_residual_max: 1.0e-10
+  cross_field_finest_l2_max: 6.0e-4

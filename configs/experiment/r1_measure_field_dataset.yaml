@@ -1,0 +1,40 @@
+seed: 20260804
+source_b03_dir: results/b03_multipeakon_reference
+source_r01_dir: results/r01_position_amplitude
+output_dir: results/r1_measure_field_dataset
+
+decomposition:
+  rank_tolerance: 1.0e-12
+  conditional_amplitude_families: [double_peakon]
+
+dataset:
+  format: compressed_npz_per_trajectory
+  dtype: float64
+  feature_channels:
+    - u_previous
+    - u_current
+    - momentum_current
+    - d1_current
+    - d2_current
+    - baseline_next
+    - baseline_momentum_next
+    - baseline_residual
+  split_policy: source_trajectory_group
+  label_normalization:
+    position: delta_q_over_L_dt
+    amplitude: delta_p_over_current_max_abs_p_dt
+    field: field_over_current_A_norm_dt
+
+acceptance:
+  maximum_relative_reconstruction_error: 1.0e-12
+  maximum_relative_orthogonality_error: 1.0e-10
+  maximum_conservative_constraint_residual: 1.0e-10
+  maximum_gram_condition: 1.0e8
+  minimum_full_rank_fraction: 1.0
+  minimum_position_cross_grid_cosine: 0.80
+  minimum_conditional_amplitude_cross_grid_cosine: 0.80
+  minimum_field_cross_grid_cosine: 0.50
+  maximum_cross_grid_field_relative_l2: 2.0
+  required_families: [single_peakon, double_peakon, triple_peakon]
+  required_source_splits: [discovery, ood]
+  minimum_samples: 1000

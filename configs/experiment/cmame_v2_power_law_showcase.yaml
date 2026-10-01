@@ -1,0 +1,22 @@
+phase: CMAME-V2-power-law-showcase
+output_dir: results/cmame_v2_power_law_showcase
+stage2_config: configs/experiment/cmame_v2_predictive_risk.yaml
+stage4_config: configs/experiment/cmame_v2_stage4_safety_shielded_controller.yaml
+u2_config: configs/experiment/cmame_u2_unknown_wave.yaml
+source_manifest: results/cmame_v2_predictive_risk/full/frozen_v2_predictive_risk_manifest.json
+domain: {length: 20.0, x_min: -10.0}
+seed_base: 133000000
+development:
+  points: 32
+  maximum_points: 128
+  reference_points: 128
+  decisions: 8
+  macro_dt: 0.002
+  tolerance: 0.01
+full:
+  points: 32
+  maximum_points: 256
+  reference_points: 512
+  decisions: 48
+  macro_dt: 0.01
+  tolerance: 0.01

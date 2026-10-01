@@ -1,0 +1,42 @@
+phase: CMAME-P3
+next_phase_on_pass: CMAME-P3.3_external_adaptive_rollout
+p21_output_dir: results/cmame_p21_mixed_causal_dataset
+p22_config: configs/experiment/cmame_p22_conservative_interface_operator.yaml
+p22_output_dir: results/cmame_p22_conservative_interface_operator
+output_dir: results/cmame_p3_space_time_adaptivity
+model: {hidden: 32}
+training:
+  seeds: [11, 29, 47]
+  epochs: 160
+  learning_rate: 0.002
+  weight_decay: 0.000001
+  error_loss_weight: 0.15
+  time_loss_weight: 0.20
+  gradient_clip: 1.0
+adaptivity:
+  dorfler_theta: 0.65
+  maximum_refined_fraction: 0.50
+  coarsen_quantile: 0.25
+rollout:
+  grids: [32, 64]
+  families: [mixed_separated, mixed_clustered]
+  seeds_per_family_grid: 2
+  seed_base: 731000
+  steps: 8
+  initial_dt: 1.0e-4
+  minimum_dt: 5.0e-5
+  maximum_dt: 2.0e-4
+  reference_substeps: 2
+  alpha_range: [0.7, 1.3]
+  collision_tolerance: 1.0e-6
+acceptance:
+  minimum_refine_f1: 0.60
+  minimum_action_accuracy: 0.60
+  maximum_time_log_mae: 0.35
+  maximum_error_log_mae: 1.25
+  minimum_adaptive_error_gain: 0.05
+  minimum_rollout_improvement_fraction: 0.50
+  maximum_median_ratio_to_fixed_coarse: 1.05
+  maximum_composite_mass_drift: 1.0e-10
+  maximum_composite_relative_h1_drift: 5.0e-2
+  maximum_equivalent_work_ratio_to_uniform_fine: 0.80

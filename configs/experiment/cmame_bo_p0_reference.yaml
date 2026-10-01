@@ -1,0 +1,58 @@
+phase: CMAME-BO-P0
+output_dir: results/cmame_bo_p0_reference
+u0_acceptance: results/cmame_u0_nonlocal_wave_contract/acceptance.json
+next_phase_on_pass: CMAME-BO-P1_classical_spectral_time_adaptivity
+
+domain:
+  length: 6.283185307179586
+  x_min: 0.0
+
+families:
+  - smooth_periodic
+  - single_lorentzian
+  - two_lorentzian
+  - smooth_to_oscillatory
+
+development:
+  amplitudes: [0.75]
+  base_points: 32
+  base_dt: 0.002
+  final_time: 0.04
+
+full:
+  amplitudes: [0.75, 1.25]
+  base_points: 64
+  base_dt: 0.002
+  final_time: 0.1
+
+dop853:
+  rtol: 1.0e-11
+  atol: 1.0e-13
+
+acceptance:
+  development:
+    maximum_spatial_fine_defect: 0.005
+    minimum_spatial_nonworsening_fraction: 0.75
+    maximum_temporal_fine_defect: 1.0e-7
+    minimum_observed_time_order: 3.2
+    maximum_ifrk4_dop853_defect: 1.0e-8
+    maximum_reversibility_defect: 1.0e-6
+    maximum_mass_drift: 1.0e-12
+    maximum_l2_drift: 1.0e-8
+    maximum_hamiltonian_drift: 1.0e-7
+  full:
+    maximum_spatial_fine_defect: 0.0005
+    minimum_spatial_nonworsening_fraction: 1.0
+    maximum_temporal_fine_defect: 1.0e-7
+    minimum_observed_time_order: 3.2
+    maximum_ifrk4_dop853_defect: 1.0e-8
+    maximum_reversibility_defect: 1.0e-6
+    maximum_mass_drift: 1.0e-12
+    maximum_l2_drift: 1.0e-8
+    maximum_hamiltonian_drift: 1.0e-7
+
+scope: >-
+  Fixed-resolution periodic Fourier--Hilbert reference audit with 3/2
+  dealiasing, IFRK4 time integration, independent interaction-picture DOP853
+  parity, refinement, reversibility, and invariant checks. No neural model,
+  online adaptivity, mCH training data, or performance claim is used.

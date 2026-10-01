@@ -1,0 +1,36 @@
+phase: CMAME-V2-stage-6-verified-coarsening
+output_dir: results/cmame_v2_stage6_verified_coarsening
+enable_verified_coarsening: true
+stage2_config: configs/experiment/cmame_v2_predictive_risk.yaml
+stage4_config: configs/experiment/cmame_v2_stage4_safety_shielded_controller.yaml
+source_manifest: results/cmame_v2_predictive_risk/full/frozen_v2_predictive_risk_manifest.json
+domain: {length: 6.283185307179586}
+development:
+  minimum_points: 16
+  points: 32
+  maximum_points: 64
+  decisions: 6
+  dt: 0.0005
+  tolerance: 0.01
+  reference_refinement: 2
+full:
+  minimum_points: 32
+  points: 64
+  maximum_points: 128
+  decisions: 12
+  dt: 0.0005
+  tolerance: 0.01
+  reference_refinement: 4
+showcase:
+  modified_camassa_holm: {family: smooth_control, seed: 205000000}
+  benjamin_ono: {family: smooth_periodic, seed: 205500000}
+acceptance:
+  maximum_terminal_relative_h1_error: 0.10
+  require_deterministic_admissibility: true
+scope: >-
+  Stage 6 activates only independently verified coarsening candidates. A
+  coarsening proposal is formed by a 2:1 projection, a local dual-resolution
+  one-step verification, and an invariant check on the projected initial
+  representation. The learned V2 risk operator never scores or authorizes the
+  coarsening action. It may be committed only after the stage-4 cooldown and
+  stable-hold hysteresis conditions are satisfied.

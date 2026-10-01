@@ -1,0 +1,4 @@
+dt: 0.002
+energy_atol: 1.0e-14
+finite_check: true
+

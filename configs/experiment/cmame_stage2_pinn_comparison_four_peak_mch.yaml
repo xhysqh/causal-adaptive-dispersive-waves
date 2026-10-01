@@ -1,0 +1,27 @@
+phase: CMAME-PAPER-STAGE2-MCH-FOUR-PEAK
+output_dir: results/cmame_stage2_pinn_comparison_four_peak_mch
+
+# Separate frozen archives prevent the new mCH illustration from mutating the
+# accepted original F2 mCH--BO evidence package.
+showcase_npz: results/cmame_f2_closed_loop_paper_evidence/full/closed_loop_showcase.npz
+mch_showcase_npz: results/cmame_f2_mch_four_peak_showcase/full/closed_loop_showcase.npz
+bo_showcase_npz: results/cmame_f2_closed_loop_paper_evidence/full/closed_loop_showcase.npz
+f2_config: configs/experiment/cmame_f2_closed_loop_paper_evidence.yaml
+mch_f2_config: configs/experiment/cmame_f2_mch_four_peak_showcase.yaml
+bo_f2_config: configs/experiment/cmame_f2_closed_loop_paper_evidence.yaml
+mch_minimum_peak_count: 4
+mch_selection_rule: >-
+  Geometry-only pre-registered four-peakon mixed-clustered showcase:
+  family=mixed_clustered, seed=2; no PINN/reference outcome used for selection.
+bo_selection_rule: pre-registered F2 two-Lorentzian showcase seed 91512003
+
+mch_baseline_config: configs/experiment/cmame_m22_learned_baselines.yaml
+mch_baseline_output: results/cmame_m22_learned_baselines/full
+bo_baseline_config: configs/experiment/cmame_bo_coordinate_pinn_baseline.yaml
+bo_baseline_output: results/cmame_bo_coordinate_pinn_baseline/full
+
+scope: >-
+  A dedicated geometry-only four-peakon mCH comparison, using the accepted
+  three-member coordinate-PINN baseline and a fresh F2 causal-adaptive
+  trajectory on the same grid, time nodes, and initial trace. BO is copied
+  only as a separate frozen comparison input; no model or field is altered.

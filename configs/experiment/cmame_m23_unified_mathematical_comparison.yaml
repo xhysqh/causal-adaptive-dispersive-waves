@@ -1,0 +1,44 @@
+phase: CMAME-M2.3
+output_dir: results/cmame_m23_unified_mathematical_comparison
+next_phase_on_pass: CMAME-M3_manuscript_figures_and_k2_extension
+m20_output_dir: results/cmame_m20_frozen_benchmark_registry
+m21_output_dir: results/cmame_m21_classical_baselines
+m22_output_dir: results/cmame_m22_learned_baselines
+m12_output_dir: results/cmame_m12_conservative_adaptive_controller
+
+domain: {length: 6.283185307179586, gamma: 0.0}
+
+development: {coarse_points: 16, initial_dt: 0.0005, enforce_superiority: false}
+full: {coarse_points: 32, initial_dt: 0.0005, enforce_superiority: true}
+
+nonlinear_solver: {tolerance: 1.0e-11, maximum_iterations: 80, damping: 1.0}
+controller:
+  reserve_fraction: 0.1
+  dorfler_theta: 0.65
+  maximum_patch_fraction: 0.75
+  halo_cells: 1
+  particle_halo_cells: 2
+  coarsen_hysteresis: 2
+  maximum_migration_budget_fraction: 0.2
+  minimum_dt: 0.0000625
+  maximum_dt: 0.001
+  time_growth_limit: 1.5
+  time_shrink_limit: 0.5
+  maximum_rejections: 8
+
+statistics: {bootstrap_samples: 2000, confidence: 0.95}
+
+acceptance:
+  minimum_terminal_tolerance_coverage: 0.90
+  minimum_paired_tolerance_monotone_fraction: 0.90
+  minimum_general_improvement_fraction: 0.65
+  maximum_general_median_error_ratio: 0.90
+  maximum_general_bootstrap_log10_upper: 0.0
+  maximum_atomic_error_over_tolerance: 1.0
+  maximum_invariant_drift: 1.0e-10
+  maximum_migration_defect: 1.0e-10
+  maximum_reflux_rate_defect: 1.0e-9
+
+figures:
+  dpi: 600
+  formats: [pdf, png]

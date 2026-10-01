@@ -1,0 +1,48 @@
+phase: CMAME-M1.0
+output_dir: results/cmame_m10_mathematical_baseline
+next_phase_on_pass: CMAME-M1.1_mixed_error_estimator
+repair_phase_on_stop: CMAME-M1.0.1_compatible_conservative_discretization
+domain:
+  length: 6.283185307179586
+  gamma: 0.0
+reference:
+  rtol: 1.0e-10
+  atol: 1.0e-12
+  collision_tolerance: 1.0e-7
+development:
+  families: [smooth_control, pure_particle_control, mixed_separated, mixed_clustered]
+  alphas: [0.8, 1.2]
+  seeds_per_family: 1
+  seed_base: 3100000
+  final_time: 0.008
+  spatial_grids: [32, 64, 128]
+  spatial_dt: 0.000125
+  time_grid: 128
+  time_dts: [0.001, 0.0005, 0.00025]
+  time_reference_dt: 0.0000625
+  reference_points: 512
+  reference_refinement: 2
+full:
+  families: [smooth_control, pure_particle_control, mixed_separated, mixed_clustered]
+  alphas: [0.5, 1.0, 1.5]
+  seeds_per_family: 3
+  seed_base: 4100000
+  final_time: 0.008
+  spatial_grids: [32, 64, 128, 256]
+  spatial_dt: 0.0000625
+  time_grid: 256
+  time_dts: [0.001, 0.0005, 0.00025, 0.000125]
+  time_reference_dt: 0.00003125
+  reference_points: 1024
+  reference_refinement: 2
+acceptance:
+  minimum_monotone_fraction: 0.75
+  # Mixed peakon states are only H1-regular; the registered baseline therefore
+  # requires a positive, resolvable fractional rate rather than smooth O(h^2).
+  minimum_median_spatial_order: 0.35
+  minimum_median_time_order: 1.2
+  maximum_mass_drift: 1.0e-9
+  maximum_h1_drift: 1.0e-8
+  maximum_particle_master_shadow_position_error: 1.0e-7
+  maximum_particle_h1_drift: 1.0e-9
+  maximum_component_closure_defect: 1.0e-10

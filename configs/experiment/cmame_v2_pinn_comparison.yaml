@@ -1,0 +1,16 @@
+phase: CMAME-V2-PINN-COMPARISON
+output_dir: results/cmame_v2_pinn_comparison
+showcase_npz: results/cmame_v2_pinn_aligned_showcase/full/v2_closed_loop_showcase.npz
+f2_config: configs/experiment/cmame_f2_closed_loop_paper_evidence.yaml
+mch_baseline_config: configs/experiment/cmame_m22_learned_baselines.yaml
+mch_baseline_output: results/cmame_m22_learned_baselines/full
+bo_baseline_config: configs/experiment/cmame_bo_coordinate_pinn_baseline.yaml
+bo_baseline_output: results/cmame_bo_coordinate_pinn_baseline/full
+mch_minimum_peak_count: 2
+mch_selection_rule: original registered mixed-clustered showcase; frozen V2 controller
+bo_selection_rule: original registered two-Lorentzian showcase; frozen V2 controller
+scope: >-
+  Independent frozen three-member coordinate-PINN baselines and frozen V2
+  adaptive trajectories evaluated on identical equation-specific space-time
+  grids and posthoc references. No PINN is retrained and no reference enters
+  the online V2 controller.

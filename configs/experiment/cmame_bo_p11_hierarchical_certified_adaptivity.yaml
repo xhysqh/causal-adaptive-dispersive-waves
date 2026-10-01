@@ -1,0 +1,61 @@
+phase: CMAME-BO-P1.1
+output_dir: results/cmame_bo_p11_hierarchical_certified_adaptivity
+p0_acceptance: results/cmame_bo_p0_reference/full/acceptance.json
+p1_acceptance: results/cmame_bo_p1_classical_adaptivity/acceptance.json
+p1_controller: results/cmame_bo_p1_classical_adaptivity/frozen_controller_manifest.json
+next_phase_on_pass: CMAME-BO-P2_learned_effectivity_operator
+domain: {length: 6.283185307179586}
+families: [smooth_periodic, single_lorentzian, two_lorentzian, smooth_to_oscillatory]
+calibration:
+  amplitudes: [0.75, 1.2]
+  phase_shifts: [0.11, 0.53]
+  points: [64, 128]
+  time_steps: [0.005, 0.01]
+  dop853_rtol: 1.0e-11
+  dop853_atol: 1.0e-13
+  safety_quantile: 0.95
+  safety_inflation: 1.10
+  minimum_safety: 1.25
+controller:
+  minimum_points: 32
+  maximum_points: 256
+  initial_points: 64
+  initial_dt: 0.01
+  minimum_dt: 0.000025
+  maximum_dt: 0.02
+  causal_safety: 0.85
+  minimum_local_budget_fraction: 0.001
+  refine_tail: 0.002
+  coarsen_tail: 2.0e-7
+  refine_aliasing: 0.0002
+  coarsen_aliasing: 2.0e-8
+  coarsen_patience: 2
+  hierarchical_probe_interval: 4
+  maximum_migration_fraction: 0.15
+  maximum_mass_drift: 1.0e-10
+  maximum_l2_drift: 2.0e-5
+  maximum_hamiltonian_drift: 2.0e-5
+external_audit:
+  amplitudes: [0.65, 1.0, 1.35]
+  phase_shifts: [0.29, 0.71]
+  tolerances: [0.001, 0.0003]
+  final_time: 0.08
+  reference_points: 256
+  reference_rtol: 1.0e-11
+  reference_atol: 1.0e-13
+  reference_maximum_step: 0.002
+acceptance:
+  minimum_calibration_upper_coverage: 0.90
+  minimum_terminal_tolerance_coverage: 0.90
+  minimum_paired_tolerance_monotone_fraction: 0.85
+  minimum_paired_tolerance_success_fraction: 0.90
+  maximum_median_work_ratio_to_p1: 0.90
+  maximum_mass_drift: 1.0e-10
+  maximum_l2_drift: 2.0e-5
+  maximum_hamiltonian_drift: 2.0e-5
+scope: >-
+  Frozen P1 baseline and fresh P1.1 calibration/external audit. Embedded
+  interaction-picture RK5(4), unresolved nonlinear residual, hierarchical
+  N--2N probes, causal remaining-error budgets and cost-aware actions are
+  online. DOP853 is calibration/posthoc only; no neural model or state
+  projection is used.

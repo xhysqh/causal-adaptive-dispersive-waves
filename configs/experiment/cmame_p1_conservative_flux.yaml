@@ -1,0 +1,34 @@
+phase: CMAME-P1
+next_phase_on_pass: CMAME-P1_gpu_scale_revalidation
+p0_acceptance: results/cmame_p0_unified_baselines/acceptance.json
+output_dir: results/cmame_p1_conservative_flux
+domain:
+  length: 6.283185307179586
+dataset:
+  grids: [32, 64, 128]
+  dts: [0.0005, 0.00025, 0.000125]
+  reference_refinement: 4
+  groups: {train: 12, validation: 4, audit: 4}
+  split_seeds: {train: 11000, validation: 21000, audit: 31000}
+  alpha_range: [0.65, 1.35]
+  gamma_range: [-0.12, 0.12]
+training:
+  seeds: [11, 29, 47]
+  epochs: 80
+  batch_size: 16
+  learning_rate: 0.001
+  weight_decay: 0.000001
+  hidden: 32
+  rhs_loss_weight: 0.25
+  gradient_clip: 1.0
+rollout:
+  fresh_seed_start: 41000
+  groups: 3
+  horizon_steps: 4
+acceptance:
+  maximum_flux_reconstruction_defect: 1.0e-9
+  minimum_label_rms: 1.0e-9
+  minimum_cross_grid_correlation: 0.55
+  maximum_validation_ratio_to_zero_flux: 0.95
+  invariant_tolerance: 1.0e-10
+  minimum_audit_improvement_fraction: 0.5

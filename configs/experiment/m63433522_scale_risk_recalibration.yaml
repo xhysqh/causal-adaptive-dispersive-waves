@@ -1,0 +1,67 @@
+phase: M6.3.4.3.3.5.2.2_R1_stratified_first_exit_recalibration
+output_dir: results/m63433522_scale_risk_recalibration_r1
+next_phase: M6.3.4.3.3.5.2.3_external_rollout_certificate
+scope: Separated periodic pre-collision scale-risk recalibration; not a broad solver or deployment certificate.
+source_m63433521_acceptance: results/m63433521_paired_scale_shadow/acceptance.json
+source_scale_budget: results/m63433521_paired_scale_shadow/scale_error_budget.json
+source_m6332_checkpoints: results/m6332_local_amr_operator
+source_m6341_checkpoints: results/m63431_deployment_risk_recalibration
+source_m6333_acceptance: results/m6333_safe_learned_rollout/acceptance.json
+seeds: [11, 29, 47]
+proposal_model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+risk_model: {context_channels: 48, residual_channels: 7, context_hidden: 32, residual_hidden: 16, context_correction_bound: 1.0}
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+controller:
+  selected_weight: 0.0625
+  minimum_dt: 0.00005
+  maximum_dt: 0.0004
+  maximum_relative_energy_drift: 0.02
+  maximum_mass_drift: 1.0e-10
+  maximum_patch_migration_relative_h1: 0.02
+  maximum_patch_migration_to_step_increment: 0.1
+  proposal_reference_dt: 0.0002
+dataset:
+  seed: 236343522
+  length: 6.283185307179586
+  families: [separated]
+  points: [32, 64, 128]
+  dts: [0.00005, 0.0001, 0.0002]
+  maximum_horizon: 8
+  labelled_starts_per_trajectory: 8
+  groups: {train: 90, validation: 45, calibration: 45, ltt: 90}
+label:
+  minimum_direction_cosine: -0.05
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_energy_drift: 0.02
+  maximum_cfl: 0.45
+  maximum_patch_migration_to_step_increment: 0.1
+  exit_threshold: 1.0
+  severe_threshold: 2.0
+model: {input_channels: 48, hidden: 48, maximum_horizon: 8, embedding_channels: 8}
+training:
+  seeds: [11, 29, 47]
+  epochs: 1500
+  learning_rate: 0.001
+  internal_validation_fraction: 0.2
+  split_seed: 63433522
+  first_exit_weight: 1.0
+  patience: 20
+  evaluation_interval: 10
+risk_control:
+  deployment_horizon: 1
+  advisory_horizons: [2, 4, 8]
+  candidate_quantile_step: 0.01
+  candidate_quantile_maximum: 0.95
+  policy: Re-evaluate after every accepted step; K2/K4/K8 may shrink or hold dt but only K1 authorizes the current commit.
+acceptance:
+  minimum_rows: 2000
+  minimum_cell_groups_per_split: 40
+  minimum_first_exits: 30
+  minimum_no_exit: 30
+  maximum_hard_exit_fraction: 0.02
+  minimum_validation_auc: 0.60
+  maximum_validation_nll_to_baseline: 1.10
+  maximum_log_severity_mae: 0.65
+  minimum_calibration_coverage: 0.80
+  minimum_worst_cell_calibration_coverage: 0.60
+  minimum_ltt_safe_opportunities_per_cell: 1

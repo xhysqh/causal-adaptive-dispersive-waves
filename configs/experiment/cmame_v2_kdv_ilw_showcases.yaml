@@ -1,0 +1,9 @@
+phase: CMAME-V2-kdv-ilw-showcases
+output_dir: results/cmame_v2_kdv_ilw_showcases
+stage2_config: configs/experiment/cmame_v2_predictive_risk.yaml
+stage4_config: configs/experiment/cmame_v2_stage4_safety_shielded_controller.yaml
+source_manifest: results/cmame_v2_predictive_risk/full/frozen_v2_predictive_risk_manifest.json
+kdv_config: configs/experiment/cmame_kdv_u11_self_certifying.yaml
+ilw_config: configs/experiment/cmame_u21_ilw_blind_bridge.yaml
+tolerance: 0.01
+ilw_depth: 1.0

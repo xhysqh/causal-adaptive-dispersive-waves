@@ -1,0 +1,26 @@
+seed: 20260804
+source_b03_dir: results/b03_multipeakon_reference
+source_r0_acceptance: results/r0_peakon_attribution/acceptance.json
+output_dir: results/r01_position_amplitude
+
+decomposition:
+  rank_tolerance: 1.0e-12
+  coefficient_signal_epsilon: 1.0e-12
+
+acceptance:
+  minimum_position_median_explained_fraction: 0.50
+  minimum_conservative_median_explained_fraction: 0.50
+  maximum_position_gram_condition: 1.0e8
+  maximum_conservative_gram_condition: 1.0e8
+  minimum_full_rank_fraction: 1.0
+  maximum_relative_orthogonality_error: 1.0e-10
+  maximum_conservative_constraint_residual: 1.0e-10
+  minimum_signal_to_particle_floor: 10.0
+  minimum_position_cross_grid_cosine: 0.80
+  minimum_conservative_position_cross_grid_cosine: 0.80
+  minimum_conservative_amplitude_cross_grid_cosine: 0.80
+  minimum_position_passing_discovery_families: 2
+  minimum_position_passing_ood_families: 1
+  minimum_position_replicated_families: 1
+  minimum_conservative_replicated_multipeakon_families: 1
+

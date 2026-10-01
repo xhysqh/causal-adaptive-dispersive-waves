@@ -1,0 +1,35 @@
+phase: M6.3.4.0_shadow_defect_dataset
+source_m6333_acceptance: results/m6333_safe_learned_rollout/acceptance.json
+source_m6332_checkpoints: results/m6332_local_amr_operator
+seeds: [11, 29, 47]
+device: auto
+model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+dataset:
+  seed: 6340
+  length: 6.283185307179586
+  dt: 0.0002
+  points: [32, 64]
+  snapshots_per_group: 4
+  groups: {train: 12, validation: 6, audit: 6}
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+controller:
+  minimum_dt: 0.00005
+  shrink_factor: 0.5
+  maximum_shadow_increment_ratio: 0.1
+  maximum_composite_energy_drift: 0.02
+  minimum_direction_cosine: -0.05
+  minimum_shadow_blend: 0.0625
+identifiability: {ridge_candidates: [0.001, 0.01, 0.1, 1.0, 10.0, 100.0]}
+acceptance:
+  minimum_samples: 180
+  minimum_groups_per_split: 6
+  minimum_family_samples_per_split: 16
+  minimum_safe_weight_categories: 3
+  minimum_defect_coefficient_of_variation: 0.2
+  minimum_direction_standard_deviation: 0.05
+  minimum_residual_defect_correlation: 0.2
+  maximum_ridge_to_strong_baseline_ratio: 0.95
+  minimum_safe_weight_ranking_auc: 0.8
+  minimum_cross_grid_defect_correlation: 0.2
+  maximum_raw_mass_drift: 1.0e-10
+  unsafe_energy_example_threshold: 0.02

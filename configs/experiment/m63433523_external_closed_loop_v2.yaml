@@ -1,0 +1,55 @@
+phase: M6.3.4.3.3.5.2.3_v2_frozen_external_closed_loop
+output_dir: results/m63433523_external_closed_loop_v2
+frozen_manifest: results/m63433523_external_closed_loop_v2/frozen_manifest.json
+next_phase: M6.3.4.3.3.5.3_dynamic_space_time_control
+scope: Independent separated periodic pre-collision closed-loop audit of the R1 frozen certificate; no development or threshold tuning is allowed.
+source_m63433522_acceptance: results/m63433522_scale_risk_recalibration_r1/acceptance.json
+source_m63433522_calibration: results/m63433522_scale_risk_recalibration_r1/calibration.json
+source_m63433522_checkpoints: results/m63433522_scale_risk_recalibration_r1
+source_m63433522_dataset: results/m63433522_scale_risk_recalibration_r1/scale_risk_samples.npz
+source_scale_budget: results/m63433521_paired_scale_shadow/scale_error_budget.json
+source_m6332_checkpoints: results/m6332_local_amr_operator
+source_m6341_checkpoints: results/m63431_deployment_risk_recalibration
+source_m6333_acceptance: results/m6333_safe_learned_rollout/acceptance.json
+seeds: [11, 29, 47]
+proposal_model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+risk_model: {context_channels: 48, residual_channels: 7, context_hidden: 32, residual_hidden: 16, context_correction_bound: 1.0}
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+controller:
+  selected_weight: 0.0625
+  minimum_dt: 0.00005
+  maximum_dt: 0.0004
+  maximum_relative_energy_drift: 0.02
+  maximum_mass_drift: 1.0e-10
+  maximum_patch_migration_relative_h1: 0.02
+  maximum_patch_migration_to_step_increment: 0.1
+  proposal_reference_dt: 0.0002
+label:
+  minimum_direction_cosine: -0.05
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_energy_drift: 0.02
+  maximum_cfl: 0.45
+  maximum_patch_migration_to_step_increment: 0.1
+  exit_threshold: 1.0
+audit:
+  # Deliberately distinct from all known development and v1 audit seeds.
+  seed: 246343523
+  length: 6.283185307179586
+  family: separated
+  points: [32, 64, 128]
+  dts: [0.00005, 0.0001, 0.0002]
+  groups_per_cell: 30
+  steps: 8
+risk_certificate:
+  global_alpha: 0.02
+  global_delta: 0.05
+  cell_alpha: 0.20
+  cell_delta_total: 0.05
+acceptance:
+  minimum_trajectories: 270
+  minimum_steps: 2160
+  minimum_learned_steps: 9
+  minimum_learned_steps_per_cell: 1
+  maximum_unsafe_learned_acceptances: 0
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_energy_drift: 0.02

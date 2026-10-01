@@ -1,0 +1,12 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite the accompanying article."
+title: "Adaptive Discretization of Nonlinear Dispersive Waves Using Equation-Dependent Diagnostics and Finite-Horizon Adequacy Estimation"
+type: software
+authors:
+  - family-names: "REPLACE_WITH_FAMILY_NAME"
+    given-names: "REPLACE_WITH_GIVEN_NAMES"
+version: 1.0.0
+date-released: "YYYY-MM-DD"
+repository-code: "https://github.com/REPLACE/REPLACE"
+license: "REPLACE_AFTER_LICENSE_SELECTION"
+

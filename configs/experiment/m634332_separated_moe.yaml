@@ -1,0 +1,21 @@
+phase: M6.3.4.3.3.2_separated_mixture_of_experts
+output_dir: results/m634332_separated_moe
+source_m634331_acceptance: results/m634331_horizon_risk/acceptance.json
+source_m634331_checkpoints: results/m634331_horizon_risk
+source_dataset: results/m634330_first_exit_dataset/first_exit_samples.npz
+seeds: [11, 29, 47]
+device: auto
+base_model: {input_channels: 43, hidden: 64}
+moe_model: {input_channels: 43, hidden: 48, experts: 3, correction_bound: 1.5, temperature: 0.7}
+training: {epochs: 1600, learning_rate: 0.001}
+calibration: {coverage: 0.9, ensemble_sigma: 1.0, support_radius_fraction: 0.7}
+acceptance:
+  minimum_auc: 0.7
+  maximum_auc_regression: 0.03
+  maximum_mae_ratio: 1.1
+  minimum_worst_group_coverage: 0.8
+  maximum_overaccepts: 0
+  minimum_long_horizon_acceptances: 1
+  minimum_expert_usage: 0.05
+  maximum_expert_usage: 0.9
+  minimum_gate_variation: 1.0e-5

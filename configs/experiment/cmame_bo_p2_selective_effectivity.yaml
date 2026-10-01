@@ -1,0 +1,67 @@
+phase: CMAME-BO-P2
+output_dir: results/cmame_bo_p2_selective_effectivity
+p11_acceptance: results/cmame_bo_p11_hierarchical_certified_adaptivity/acceptance.json
+p11_controller: results/cmame_bo_p11_hierarchical_certified_adaptivity/frozen_certified_controller_manifest.json
+next_phase_on_pass: CMAME-BO-P3_unified_shallow_deep_wave_mechanism
+domain: {length: 6.283185307179586}
+families: [smooth_periodic, single_lorentzian, two_lorentzian, smooth_to_oscillatory]
+dataset:
+  splits:
+    train: {amplitudes: [0.55, 0.85, 1.15, 1.45], phase_shifts: [0.07, 0.31], steps: 3}
+    validation: {amplitudes: [0.70, 1.30], phase_shifts: [0.19], steps: 3}
+    calibration: {amplitudes: [0.65, 1.35], phase_shifts: [0.43], steps: 3}
+    selection: {amplitudes: [0.75, 1.25], phase_shifts: [0.61], steps: 3}
+  points: [64, 128]
+  time_steps: [0.004, 0.008]
+  tolerances: [0.001, 0.0003]
+  reference_rtol: 1.0e-10
+  reference_atol: 1.0e-12
+  reference_maximum_step_fraction: 0.25
+  label_resolution_floor_fraction: 0.01
+model: {hidden: 64}
+training:
+  seeds: [11, 29, 47]
+  epochs: 300
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  gradient_clip: 2.0
+  upper_quantile: 0.95
+calibration:
+  conformal_coverage: 0.95
+  support_radius_quantile: 0.99
+  maximum_uncertainty_width: 1.25
+  maximum_probe_skip_steps: 8
+acceptance:
+  minimum_selection_upper_coverage: 0.90
+  minimum_family_selection_upper_coverage: 0.85
+  minimum_probe_recall: 1.0
+  minimum_probe_skip_fraction: 0.10
+  minimum_terminal_tolerance_coverage: 0.95
+  minimum_family_terminal_tolerance_coverage: 0.90
+  minimum_paired_tolerance_monotone_fraction: 0.95
+  maximum_median_error_ratio_to_p11: 1.10
+  maximum_median_work_ratio_to_p11: 0.90
+  minimum_probe_reduction_fraction: 0.25
+  maximum_mass_drift: 1.0e-10
+  maximum_l2_drift: 2.0e-5
+  maximum_hamiltonian_drift: 2.0e-5
+external_audit:
+  amplitudes: [0.80, 1.0, 1.20]
+  phase_shifts: [0.79, 0.91]
+  tolerances: [0.001, 0.0003]
+  final_time: 0.08
+  reference_points: 256
+  reference_rtol: 1.0e-11
+  reference_atol: 1.0e-13
+  reference_maximum_step: 0.002
+ood_audit:
+  points: 256
+  amplitude: 1.80
+  phase_shift: 1.07
+  dt: 0.016
+  tolerance: 0.0001
+scope: >-
+  Frozen P1.1 deterministic conservation envelope with a fresh causal,
+  translation-invariant selective effectivity ensemble. Neural outputs only
+  tighten error estimates or request/abstain from probes. DOP853 and N--2N
+  truth are offline labels or posthoc audit; invariant gates remain deterministic.

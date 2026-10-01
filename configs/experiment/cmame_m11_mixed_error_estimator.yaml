@@ -1,0 +1,49 @@
+phase: CMAME-M1.1
+output_dir: results/cmame_m11_mixed_error_estimator
+m101_output_dir: results/cmame_m101_compatible_conservative
+next_phase_on_pass: CMAME-M1.2_conservative_adaptive_controller
+domain:
+  length: 6.283185307179586
+  gamma: 0.0
+development:
+  families: [smooth_control, mixed_separated, mixed_clustered]
+  alphas: [0.8, 1.2]
+  grids: [32]
+  seeds_per_cell: 1
+  seed_base: 7100000
+  dt: 0.0005
+  final_time: 0.002
+full:
+  families: [smooth_control, mixed_separated, mixed_clustered]
+  alphas: [0.5, 1.0, 1.5]
+  grids: [32, 64]
+  seeds_per_cell: 2
+  seed_base: 8100000
+  dt: 0.0005
+  final_time: 0.004
+nonlinear_solver:
+  tolerance: 1.0e-11
+  maximum_iterations: 80
+  damping: 1.0
+reference:
+  refinement: 4
+  shadow_refinement: 3
+  rtol: 1.0e-10
+  atol: 1.0e-12
+  shadow_rtol: 1.0e-9
+  shadow_atol: 1.0e-11
+  collision_tolerance: 1.0e-8
+estimator:
+  spatial_order: 1.0
+  dorfler_theta: 0.6
+  calibration_coverage_quantile: 0.95
+  physical_unit_weights: [1.0, 1.0, 1.0, 1.0]
+acceptance:
+  minimum_spearman: 0.55
+  minimum_coverage: 0.70
+  minimum_family_coverage: 0.50
+  minimum_median_effectivity: 0.40
+  maximum_median_effectivity: 6.0
+  maximum_effectivity: 30.0
+  maximum_reference_disagreement: 0.10
+  maximum_invariant_drift: 1.0e-10

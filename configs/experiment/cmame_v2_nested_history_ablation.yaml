@@ -1,0 +1,17 @@
+phase: CMAME-V2-nested-causal-history-ablation
+source_dataset_root: results/cmame_v2_predictive_risk/full
+training_config: configs/experiment/cmame_v2_stage3_predictive_risk_operator.yaml
+kdv_ilw_config: configs/experiment/cmame_v2_kdv_ilw_showcases.yaml
+power_law_config: configs/experiment/cmame_v2_power_law_showcase.yaml
+output_dir: results/cmame_v2_nested_history_ablation
+variants: [full, instantaneous, departure, departure_velocity]
+closed_loop_variants: [full, instantaneous, departure, departure_velocity]
+threshold: 0.65
+bootstrap_replicates: 1000
+bootstrap_seed: 420317
+tolerance: 0.01
+scope: >-
+  Nested 24/30/36/42-dimensional history ablation. All variants use the same
+  H=2 labels, mCH/BO trajectory groups, split, three seeds, architecture,
+  optimizer, loss, and calibration protocol. Each reduced model has its own
+  normalization, support geometry, and conformal risk margin.

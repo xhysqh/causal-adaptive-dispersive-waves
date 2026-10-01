@@ -1,0 +1,64 @@
+phase: CMAME-BO-P2.1
+output_dir: results/cmame_bo_p21_conformal_probe_pruner
+p11_acceptance: results/cmame_bo_p11_hierarchical_certified_adaptivity/acceptance.json
+p11_controller: results/cmame_bo_p11_hierarchical_certified_adaptivity/frozen_certified_controller_manifest.json
+next_phase_on_pass: CMAME-BO-P3_unified_shallow_deep_wave_mechanism
+domain: {length: 6.283185307179586}
+families: [smooth_periodic, single_lorentzian, two_lorentzian, smooth_to_oscillatory]
+dataset:
+  splits:
+    train: {amplitudes: [0.55, 0.85, 1.15, 1.45], phase_shifts: [0.07, 0.31], steps: 4}
+    validation: {amplitudes: [0.70, 1.30], phase_shifts: [0.19, 0.37], steps: 4}
+    calibration: {amplitudes: [0.65, 1.35], phase_shifts: [0.43, 0.53], steps: 4}
+    selection: {amplitudes: [0.75, 1.25], phase_shifts: [0.61, 0.67], steps: 4}
+  points: [64, 128]
+  time_steps: [0.004, 0.008]
+  tolerances: [0.001, 0.0003]
+model: {hidden: 48}
+training:
+  seeds: [11, 29, 47]
+  epochs: 250
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  gradient_clip: 2.0
+  upper_quantile: 0.95
+  false_negative_weight: 6.0
+calibration:
+  trajectory_coverage: 0.95
+  support_radius_quantile: 0.99
+  maximum_uncertainty_width: 1.25
+  default_probability_limit: 0.10
+  skip_budget_fractions: [0.20, 0.10, 0.05, 0.02, 0.01]
+acceptance:
+  minimum_selection_upper_coverage: 0.90
+  minimum_selection_skip_fraction: 0.05
+  minimum_terminal_tolerance_coverage: 0.95
+  minimum_family_terminal_tolerance_coverage: 0.90
+  minimum_paired_tolerance_monotone_fraction: 1.0
+  maximum_median_error_ratio_to_p11: 1.05
+  maximum_median_work_ratio_to_p11: 0.95
+  minimum_probe_reduction_fraction: 0.20
+  maximum_mass_drift: 1.0e-10
+  maximum_l2_drift: 2.0e-5
+  maximum_hamiltonian_drift: 2.0e-5
+external_audit:
+  amplitudes: [0.80, 1.0, 1.20]
+  phase_shifts: [0.79, 0.91]
+  tolerances: [0.001, 0.0003]
+  final_time: 0.08
+  reference_points: 256
+  reference_rtol: 1.0e-11
+  reference_atol: 1.0e-13
+  reference_maximum_step: 0.002
+ood_audit:
+  points: 512
+  amplitude: 2.50
+  phase_shift: 1.07
+  dt: 0.04
+  tolerance: 0.0001
+scope: >-
+  Frozen P1.1 deterministic conservation envelope with a trajectory-group
+  conformal selective probe pruner. The learned component may only cancel an
+  already scheduled regular N--2N probe. It cannot add probes, modify an error
+  estimate, rank N/dt actions, advance the PDE or update the state. Hard
+  spectral triggers and OOD inputs follow P1.1 exactly; shadow truth is audit-only.

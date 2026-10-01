@@ -1,0 +1,34 @@
+phase: CMAME-experiment-C-dynamic-feedback
+output_dir: results/cmame_experiment_c
+
+sources:
+  mechanism: results/_manuscript_evidence_20260902/results/cmame_u1_universal_mechanism/full
+  u22_config: configs/experiment/cmame_u22_trait_responsive_stress.yaml
+  archived_audit: results/_manuscript_evidence_20260902/results/cmame_u22_trait_responsive_stress/full/audit_rows.csv
+
+# Illustrative trajectory chosen by the declared rule below. This is a
+# mechanism illustration, not a new population-level accuracy estimate.
+trajectory:
+  equation: power_law
+  dispersion_order: 2.2
+  family: smooth_to_oscillatory
+  seed: 157003100
+  amplitude_scale: 1.75
+  tolerance: 0.0001
+
+selection_rule: >-
+  Among frozen successful power-law smooth-to-oscillatory trajectories with
+  amplitude 1.75 and tolerance 1e-4, retain runs with exactly two refinements followed by exactly
+  one coarsening and no later re-refinement; choose the earliest coarsening and
+  use group_id for ties.
+
+figures:
+  dpi: 300
+  width_inches: 7.2
+  font_size: 8.5
+
+scope: >-
+  Replay one already registered external trajectory with the already frozen
+  operator and thresholds. Additional fields only expose pre-decision hold
+  diagnostics. They do not alter candidate construction, selection, probing,
+  coarsening or the post-hoc reference.

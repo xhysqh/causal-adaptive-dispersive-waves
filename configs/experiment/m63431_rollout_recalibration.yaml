@@ -1,0 +1,37 @@
+phase: M6.3.4.3.1_scale_consistent_rollout_recalibration
+output_dir: results/m63431_rollout_recalibration
+source_risk_acceptance: results/m63431_deployment_risk_recalibration/acceptance.json
+source_m6341_calibration: results/m63431_deployment_risk_recalibration/calibration.json
+source_m6341_checkpoints: results/m63431_deployment_risk_recalibration
+source_m6332_checkpoints: results/m6332_local_amr_operator
+source_m6333_acceptance: results/m6333_safe_learned_rollout/acceptance.json
+seeds: [11, 29, 47]
+proposal_model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+risk_model: {context_channels: 48, residual_channels: 7, context_hidden: 32, residual_hidden: 16, context_correction_bound: 1.0}
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+controller:
+  selected_weight: 0.0625
+  minimum_dt: 0.00005
+  maximum_dt: 0.0004
+  shrink_factor: 0.5
+  minimum_direction_cosine: -0.05
+  maximum_relative_energy_drift: 0.02
+  maximum_mass_drift: 1.0e-10
+  risk_feature_version: scale_consistent_v2
+  proposal_reference_dt: 0.0002
+rollout:
+  length: 6.283185307179586
+  calibration_seeds: [93431, 93432, 93433, 93434, 93435, 93436]
+  selector_validation_seeds: [93437, 93438, 93439, 93440, 93441, 93442]
+  audit_seeds: [93443, 93444, 93445, 93446, 93447, 93448]
+  families: [smooth, separated, clustered]
+  points: [32, 64, 128]
+  dts: [0.00005, 0.0001, 0.0002, 0.00025]
+acceptance:
+  maximum_shadow_defect_ratio: 0.1
+  minimum_direction_cosine: -0.05
+  maximum_audit_overaccepts: 0
+  minimum_calibration_acceptances: 3
+  minimum_audit_acceptances: 1
+  minimum_audit_safe_score_auc: 0.6
+  minimum_audit_family_coverage: 3

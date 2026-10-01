@@ -1,0 +1,33 @@
+phase: CMAME-P2.2
+next_phase_on_pass: CMAME-P3_space_time_adaptivity
+p21_config: configs/experiment/cmame_p21_mixed_causal_dataset.yaml
+p21_output_dir: results/cmame_p21_mixed_causal_dataset
+p1_config: configs/experiment/cmame_p1_gpu_scale_revalidation.yaml
+p1_output_dir: results/cmame_p1_gpu_scale_revalidation
+output_dir: results/cmame_p22_conservative_interface_operator
+domain: {length: 6.283185307179586}
+model:
+  hidden: 32
+  dilations: [1, 2, 4]
+  cluster_threshold: 0.16
+  cluster_temperature: 0.025
+training:
+  seeds: [11, 29, 47]
+  epochs: 180
+  batch_size: 12
+  learning_rate: 0.002
+  weight_decay: 0.000001
+  rhs_loss_weight: 0.15
+  gradient_clip: 1.0
+rollout:
+  horizons: [2, 4, 8, 16]
+  reference_refinement: 4
+  reference_rtol: 1.0e-9
+  reference_atol: 1.0e-11
+  collision_tolerance: 1.0e-6
+acceptance:
+  maximum_validation_ratio_to_zero: 0.80
+  maximum_family_validation_ratio_to_zero: 0.90
+  minimum_audit_improvement_fraction: 0.55
+  maximum_audit_ratio_to_baseline: 0.95
+  invariant_tolerance: 1.0e-10

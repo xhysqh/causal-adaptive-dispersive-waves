@@ -1,0 +1,17 @@
+phase: M6.3.4.3.3.1_horizon_risk_to_go
+output_dir: results/m634331_horizon_risk
+source_dataset_acceptance: results/m634330_first_exit_dataset/acceptance.json
+source_dataset: results/m634330_first_exit_dataset/first_exit_samples.npz
+seeds: [11, 29, 47]
+device: auto
+model: {input_channels: 43, hidden: 64}
+training: {epochs: 1200, learning_rate: 0.0015}
+calibration: {coverage: 0.9, ensemble_sigma: 1.0, support_radius_fraction: 0.7}
+acceptance:
+  minimum_audit_auc: 0.7
+  minimum_horizon_coverage: 0.9
+  minimum_worst_group_coverage: 0.8
+  maximum_audit_overaccepts: 0
+  minimum_audit_acceptances: 4
+  minimum_first_exit_accuracy: 0.3
+  minimum_ensemble_variance: 1.0e-8

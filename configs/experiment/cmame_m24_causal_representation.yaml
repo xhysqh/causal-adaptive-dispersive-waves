@@ -1,0 +1,92 @@
+phase: CMAME-M2.4
+output_dir: results/cmame_m24_causal_representation
+next_phase_on_pass: CMAME-M2.5_frozen_mathematical_benchmark
+
+prerequisites:
+  m13: results/cmame_m13_local_compatible_amr/full/acceptance.json
+  m20: results/cmame_m20_frozen_benchmark_registry/full/acceptance.json
+m12_manifest: results/cmame_m12_conservative_adaptive_controller/full/frozen_controller_manifest.json
+
+domain: {length: 6.283185307179586, gamma: 0.0}
+horizons: [1, 2, 4, 8]
+
+development:
+  families: [smooth_periodic, smooth_to_sharp, single_periodic_peakon, separated_multipeakon, clustered_multipeakon, mixed_field_peakon]
+  alphas: [1.0]
+  tolerances: [0.002, 0.00075]
+  groups_per_split: {train: 2, calibration: 1, selection: 1}
+  state_offsets: [0, 2, 4]
+  seed_base: 24000000
+  coarse_points: 16
+  base_dt: 0.00025
+
+full:
+  families: [smooth_periodic, smooth_to_sharp, single_periodic_peakon, separated_multipeakon, clustered_multipeakon, mixed_field_peakon]
+  alphas: [0.5, 1.0, 1.5]
+  tolerances: [0.002, 0.00075, 0.00025]
+  groups_per_split: {train: 12, calibration: 6, selection: 6}
+  state_offsets: [0, 2, 4, 6]
+  seed_base: 25000000
+  coarse_points: 32
+  base_dt: 0.00025
+
+nonlinear_solver: {tolerance: 1.0e-11, maximum_iterations: 80, damping: 1.0}
+reference: {refinement: 4, rtol: 1.0e-10, atol: 1.0e-12, collision_tolerance: 1.0e-8}
+controller:
+  reserve_fraction: 0.1
+  dorfler_theta: 0.65
+  maximum_patch_fraction: 0.75
+  maximum_points: 256
+  halo_cells: 1
+  particle_halo_cells: 2
+  coarsen_hysteresis: 2
+  maximum_migration_budget_fraction: 0.2
+  minimum_dt: 0.00003125
+  maximum_dt: 0.001
+  time_growth_limit: 1.5
+  time_shrink_limit: 0.5
+  maximum_rejections: 8
+
+model: {hidden: 64}
+training:
+  seeds: [11, 29, 47]
+  epochs: 400
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  causal_epsilon: 2.0
+  ranking_weight: 0.25
+  cost_weight: 0.05
+  budget_weight: 0.1
+  gradient_clip: 1.0
+calibration: {quantile: 0.9, ensemble_std_multiplier: 1.0, external_margin_inflation: 10.0}
+
+acceptance:
+  maximum_selection_log_error_mae: 1.25
+  minimum_selection_action_ranking_accuracy: 0.60
+  minimum_selection_upper_coverage: 0.85
+  minimum_external_tolerance_coverage: 0.90
+  minimum_external_improvement_fraction: 0.20
+  maximum_external_median_error_ratio: 1.01
+  maximum_invariant_drift: 1.0e-10
+  maximum_migration_defect: 1.0e-10
+  maximum_reflux_rate_defect: 1.0e-9
+
+external:
+  development:
+    families: [smooth_periodic, smooth_to_sharp, single_periodic_peakon, separated_multipeakon, clustered_multipeakon, mixed_field_peakon]
+    alphas: [0.5, 1.0, 1.5]
+    tolerances: [0.002, 0.00075, 0.00025]
+    seeds_per_cell: 2
+    seed_base: 27000000
+    coarse_points: 32
+    base_dt: 0.00025
+    final_time: 0.002
+  full:
+    families: [smooth_periodic, smooth_to_sharp, single_periodic_peakon, separated_multipeakon, clustered_multipeakon, mixed_field_peakon]
+    alphas: [0.5, 1.0, 1.5]
+    tolerances: [0.002, 0.00075, 0.00025]
+    seeds_per_cell: 4
+    seed_base: 28000000
+    coarse_points: 32
+    base_dt: 0.00025
+    final_time: 0.002

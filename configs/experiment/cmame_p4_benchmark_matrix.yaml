@@ -1,0 +1,37 @@
+phase: CMAME-P4
+p3_config: configs/experiment/cmame_p3_space_time_adaptivity.yaml
+p3_output_dir: results/cmame_p3_space_time_adaptivity
+output_dir: results/cmame_p4_benchmark_matrix
+domain: {length: 6.283185307179586}
+development_matrix:
+  families: [smooth_control, pure_particle_control, mixed_separated, mixed_clustered]
+  grids: [32, 64]
+  alphas: [0.8, 1.2]
+  initial_dts: [1.0e-4]
+  replicates: 1
+  seed_base: 840000
+  horizon_steps: 4
+full_matrix:
+  families: [smooth_control, pure_particle_control, mixed_separated, mixed_clustered]
+  grids: [32, 64, 128]
+  alphas: [0.5, 0.8, 1.0, 1.2, 1.5]
+  initial_dts: [5.0e-5, 1.0e-4, 2.0e-4]
+  replicates: 3
+  seed_base: 940000
+  horizon_steps: 16
+reference:
+  refinement: 4
+  rtol: 1.0e-10
+  atol: 1.0e-12
+  collision_tolerance: 1.0e-6
+timing:
+  development_repeats: 1
+  full_repeats: 3
+acceptance:
+  invariant_mass_tolerance: 1.0e-10
+  invariant_h1_tolerance: 5.0e-2
+  minimum_p3_improvement_fraction_over_classical: 0.50
+  maximum_p3_median_ratio_to_uniform_coarse: 1.10
+  maximum_p3_median_ratio_to_uniform_fine: 1.35
+  minimum_full_matched_accuracy_speedup: 1.05
+  maximum_full_p95_h1: 0.20

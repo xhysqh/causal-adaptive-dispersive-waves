@@ -1,0 +1,29 @@
+phase: CMAME-E1
+next_phase_on_pass: CMAME-E2_equal_route_benchmark
+p3_config: configs/experiment/cmame_p3_space_time_adaptivity.yaml
+p4_development_acceptance: results/cmame_p4_benchmark_matrix/development/acceptance.json
+p4_full_acceptance: results/cmame_p4_benchmark_matrix/full/acceptance.json
+output_dir: results/cmame_e1_tensorized_engine
+audit:
+  grids: [32, 64]
+  families: [mixed_separated, mixed_clustered]
+  seeds: [1601000, 1601001]
+  alpha_range: [0.7, 1.3]
+  initial_dt: 1.0e-4
+  steps: 4
+benchmark:
+  batch_size: 16
+  warmup: 2
+  repeats: 5
+acceptance:
+  maximum_same_device_batch_serial_one_step_h1: 1.0e-6
+  maximum_one_step_relative_h1_defect: 1.0e-6
+  maximum_flux_zero_mode: 1.0e-7
+  maximum_terminal_relative_h1: 2.0e-5
+  maximum_dt_relative_difference: 2.0e-6
+  maximum_patch_mismatch_fraction: 0.0
+  maximum_composite_mass_drift: 1.0e-10
+  maximum_composite_relative_h1_drift: 5.0e-2
+  minimum_p4_improvement_fraction_over_classical: 0.90
+  minimum_cuda_batch_speedup: 1.25
+  minimum_cuda_rollout_speedup: 1.10

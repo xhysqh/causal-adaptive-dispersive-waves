@@ -1,0 +1,31 @@
+seed: 20260803
+source_dir: results/a21_target_representation/candidates/r4_full
+source_selection: results/a21_target_representation/selected_representation.json
+output_dir: results/a21_causal_amplitude
+domain: {x_min: -10.0, length: 20.0}
+causal_scale:
+  kind: geometric_baseline_increment_residual
+  epsilon: 1.0e-12
+folds:
+  - {id: holdout_n128_dt004, points: 128, dt: 0.004}
+  - {id: holdout_n64_dt001, points: 64, dt: 0.001}
+  - {id: holdout_n128_dt002, points: 128, dt: 0.002}
+training:
+  seeds: [11, 22, 33]
+  epochs: 15
+  batch_size: 128
+  samples_per_trajectory_per_epoch: 256
+  learning_rate: 0.002
+  weight_decay: 1.0e-6
+  gradient_clip: 1.0
+model:
+  hidden_channels: 24
+  blocks: 3
+  kernel_size: 5
+  normalization: group
+acceptance:
+  maximum_normalized_family_spread: 10.0
+  maximum_fold_seed_mean_defect_ratio: 1.0
+  minimum_improved_families_per_fold_seed: 2
+  maximum_direction_failures: 0
+  require_finite: true

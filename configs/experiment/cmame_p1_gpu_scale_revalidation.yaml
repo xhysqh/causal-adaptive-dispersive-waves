@@ -1,0 +1,33 @@
+phase: CMAME-P1-GPU
+next_phase_on_pass: CMAME-P2_mixed_coupling
+p0_acceptance: results/cmame_p0_unified_baselines/acceptance.json
+output_dir: results/cmame_p1_gpu_scale_revalidation
+domain: {length: 6.283185307179586}
+dataset:
+  grids: [32, 64, 128]
+  dts: [0.0005, 0.00025, 0.000125]
+  reference_refinement: 4
+  groups: {train: 128, validation: 32, audit: 32}
+  split_seeds: {train: 51000, validation: 61000, audit: 71000}
+  alpha_range: [0.50, 1.50]
+  gamma_range: [-0.20, 0.20]
+training:
+  seeds: [11, 29, 47]
+  epochs: 200
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 0.000001
+  hidden: 32
+  rhs_loss_weight: 0.25
+  gradient_clip: 1.0
+rollout:
+  fresh_seed_start: 81000
+  groups: 32
+  horizon_steps: 16
+acceptance:
+  maximum_flux_reconstruction_defect: 1.0e-9
+  minimum_label_rms: 1.0e-9
+  minimum_cross_grid_correlation: 0.55
+  maximum_validation_ratio_to_zero_flux: 0.85
+  invariant_tolerance: 1.0e-10
+  minimum_audit_improvement_fraction: 0.70

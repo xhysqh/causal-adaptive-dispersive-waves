@@ -1,0 +1,64 @@
+phase: CMAME-KDV-Z0
+output_dir: results/cmame_kdv_z0_zero_shot
+f1_output_dir: results/cmame_f101_metric_repair
+
+domain: {length: 20.0, x_min: -10.0}
+seeds:
+  # Disjoint from every F1.0.1 train/validation/calibration/selection/external seed.
+  external_base: 93000000
+
+development:
+  groups_per_family: 1
+  decisions: 3
+  points: 32
+  maximum_points: 64
+  reference_points: 64
+  macro_dt: 0.002
+  tolerances: [0.05]
+  tail_fraction: 0.65
+  richardson_safety: 1.25
+  spatial_safety: 0.05
+  representation_safety: 0.02
+  maximum_nonlinear_phase: 2.0
+  maximum_invariant_drift: 0.02
+  acceptance:
+    minimum_tolerance_coverage: 0.75
+    minimum_family_coverage: 0.0
+    maximum_invariant_drift: 0.02
+    minimum_authority_fraction: 0.0
+
+full:
+  groups_per_family: 5
+  decisions: 64
+  points: 64
+  maximum_points: 256
+  reference_points: 512
+  macro_dt: 0.01
+  tolerances: [0.01, 0.003]
+  tail_fraction: 0.65
+  richardson_safety: 1.25
+  spatial_safety: 0.05
+  representation_safety: 0.02
+  maximum_nonlinear_phase: 2.0
+  maximum_invariant_drift: 0.001
+
+calibration:
+  # Copied from the frozen F1 protocol; never estimated from KdV.
+  reserve_fraction: 0.10
+
+reference: {rtol: 1.0e-10, atol: 1.0e-12}
+
+acceptance:
+  minimum_tolerance_coverage: 0.95
+  minimum_family_coverage: 0.90
+  maximum_invariant_drift: 0.001
+  minimum_authority_fraction: 0.10
+  minimum_action_intervention_fraction: 0.05
+  maximum_median_error_ratio_to_control: 1.05
+  maximum_median_work_ratio_to_control: 1.10
+
+scope: >-
+  Pre-registered strict zero-shot falsification on periodic KdV. No KdV row may
+  train, calibrate or select a model. The two original mCH/BO adapters are both
+  evaluated and their worst conformal risk is used. A fixed macro-time horizon
+  makes every action and the analytical-control arm physically paired.

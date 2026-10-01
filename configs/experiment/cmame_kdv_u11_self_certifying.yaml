@@ -1,0 +1,87 @@
+phase: CMAME-KDV-U1.1
+output_dir: results/cmame_kdv_u11_self_certifying
+mechanism_output_dir: results/cmame_u1_universal_mechanism
+next_phase_on_pass: CMAME-U2_unified_closed_loop_benchmark
+
+domain: {length: 20.0, x_min: -10.0}
+seeds:
+  # The 111M range is retired as U1 diagnostic evidence.
+  development_base: 121000000
+  external_base: 123000000
+
+development:
+  groups_per_family: 1
+  decisions: 6
+  points: 32
+  maximum_points: 64
+  probe_maximum_points: 128
+  reference_points: 64
+  macro_dt: 0.002
+  # Loose certification case plus a pre-registered refinement-stress case.
+  tolerances: [0.05, 0.0001]
+  tail_fraction: 0.65
+  richardson_safety: 1.25
+  spatial_safety: 0.05
+  representation_safety: 0.02
+  maximum_nonlinear_phase: 2.0
+  maximum_invariant_drift: 0.02
+  acceptance:
+    minimum_tolerance_coverage: 0.75
+    minimum_family_coverage: 0.0
+    maximum_invariant_drift: 0.02
+    minimum_authority_fraction: 0.20
+    minimum_family_authority_fraction: 0.20
+    minimum_probe_reduction_fraction: 0.25
+    minimum_action_intervention_fraction: 0.01
+    maximum_total_work_ratio_to_always_probe: 0.90
+
+full:
+  groups_per_family: 5
+  decisions: 64
+  # Deliberately coarse start: the audit must exercise spatial/time adaptation.
+  points: 32
+  maximum_points: 256
+  probe_maximum_points: 512
+  reference_points: 512
+  macro_dt: 0.01
+  tolerances: [0.01, 0.003, 0.0001]
+  tail_fraction: 0.65
+  richardson_safety: 1.25
+  spatial_safety: 0.05
+  representation_safety: 0.02
+  maximum_nonlinear_phase: 2.0
+  maximum_invariant_drift: 0.001
+
+certification:
+  warmup_probes: 3
+  rolling_window: 8
+  release_horizon: 6
+  verification_interval: 4
+  probe_safety: 1.50
+  maximum_log_jump: 1.50
+  reserve_fraction: 0.10
+
+reference: {rtol: 1.0e-10, atol: 1.0e-12}
+
+# Fixed before inspecting posthoc errors.  The collision family is selected
+# for its mathematical relevance, then the smallest external seed and the
+# strictest tolerance are used deterministically.
+figure_representative:
+  family: two_soliton_collision
+
+acceptance:
+  minimum_tolerance_coverage: 0.95
+  minimum_family_coverage: 0.90
+  maximum_invariant_drift: 0.001
+  minimum_authority_fraction: 0.30
+  minimum_family_authority_fraction: 0.25
+  minimum_probe_reduction_fraction: 0.50
+  minimum_action_intervention_fraction: 0.01
+  maximum_total_work_ratio_to_always_probe: 0.90
+  maximum_median_error_ratio_to_always_probe: 1.05
+
+scope: >-
+  Reference-free online certified transfer of the frozen equation-neutral U1
+  operator to blind KdV trajectories. Static OOD invokes hierarchical probes;
+  only a rolling certificate may grant temporary authority. Network weights,
+  offline support, conformal margins and analytical gates remain immutable.

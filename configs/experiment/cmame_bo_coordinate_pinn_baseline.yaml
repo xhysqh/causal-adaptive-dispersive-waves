@@ -1,0 +1,36 @@
+phase: CMAME-BO-PINN-BASELINE
+output_dir: results/cmame_bo_coordinate_pinn_baseline
+domain: {length: 6.283185307179586}
+families: [smooth_periodic, single_lorentzian, two_lorentzian, smooth_to_oscillatory]
+ensemble_seeds: [11, 29, 47]
+dataset_seed: 84621000
+
+development:
+  points: 32
+  groups_per_family: 2
+  validation_groups_per_family: 1
+  times: [0.032, 0.064, 0.126]
+  reference_dt: 0.001
+  epochs: 30
+  batch_size: 16
+
+full:
+  points: 64
+  groups_per_family: 8
+  validation_groups_per_family: 2
+  times: [0.016, 0.048, 0.080, 0.126]
+  reference_dt: 0.0005
+  epochs: 240
+  batch_size: 32
+
+model: {hidden: 96, layers: 5, modes: 12, coordinate_modes: 12}
+optimizer: {learning_rate: 0.001, physics_weight: 0.0001}
+acceptance:
+  maximum_validation_mse: 0.0025
+  maximum_ratio_to_persistence: 0.90
+  require_three_members: true
+
+scope: >-
+  Independent BO coordinate-PINN baseline trained only on registered BO
+  reference trajectories. It shares no checkpoint, estimator, controller,
+  or posthoc audit label with the causal-adaptive solver.

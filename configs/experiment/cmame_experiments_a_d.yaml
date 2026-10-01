@@ -1,0 +1,31 @@
+phase: CMAME-experiments-A-D
+output_dir: results/cmame_experiments_a_d
+
+sources:
+  universal_mechanism: results/_manuscript_evidence_20260902/results/cmame_u1_universal_mechanism/full
+  trait_stress: results/_manuscript_evidence_20260902/results/cmame_u22_trait_responsive_stress/full
+
+experiment_a:
+  split: selection
+  nominal_group_coverage: 0.95
+  bins: 12
+  scatter_cap_per_equation: 900
+  scatter_seed: 20260921
+  selected_features:
+    - {index: 5, label: "$q_{\\mathrm{stiff}}=\\log(1+\\chi_{\\mathrm{stiff}})$"}
+    - {index: 10, label: "$s_{\\mathrm{loc}}$"}
+    - {index: 11, label: "$s_{\\mathrm{tail}}$"}
+
+experiment_d:
+  proposed_arm: trait_responsive
+  comparison_arm: always_probe
+  wave_number_min: 0.05
+  wave_number_max: 4.0
+  wave_number_samples: 400
+  ilw_display_depths: [0.1, 0.5, 1.0, 5.0, 20.0]
+  power_display_orders: [2.2, 2.6, 3.2]
+
+figures:
+  dpi: 300
+  width_inches: 7.2
+  font_size: 8.5

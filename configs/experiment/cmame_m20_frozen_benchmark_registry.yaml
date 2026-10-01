@@ -1,0 +1,88 @@
+phase: CMAME-M2.0
+output_dir: results/cmame_m20_frozen_benchmark_registry
+next_phase_on_pass: CMAME-M2.1_classical_baselines
+m13_acceptance: results/cmame_m13_local_compatible_amr/full/acceptance.json
+
+equation:
+  name: modified_camassa_holm
+  formula: "m_t + alpha * d_x[(u^2-u_x^2)m] = 0; m = u-u_xx"
+  gamma: 0.0
+  domain: one_dimensional_periodic_pre_collision
+
+methods:
+  - {name: reference_fourier_dop853, category: reference, representation: eulerian_spectral, families: [smooth_periodic, smooth_to_sharp, mixed_field_peakon], implementation: independent, trainable: false, adaptive_space: false, adaptive_time: true, frozen: true}
+  - {name: reference_particle_dop853, category: reference, representation: periodic_measure, families: [single_periodic_peakon, separated_multipeakon, clustered_multipeakon], implementation: independent, trainable: false, adaptive_space: false, adaptive_time: true, frozen: true}
+  - {name: conservative_finite_difference, category: classical, representation: eulerian_uniform, families: [smooth_periodic, smooth_to_sharp], implementation: planned_m21, trainable: false, adaptive_space: false, adaptive_time: false, frozen: true}
+  - {name: fourier_ifrk4, category: classical, representation: eulerian_spectral, families: [smooth_periodic, smooth_to_sharp], implementation: planned_m21, trainable: false, adaptive_space: false, adaptive_time: false, frozen: true}
+  - {name: residual_space_time_amr, category: classical, representation: eulerian_particle_amr, families: [smooth_periodic, smooth_to_sharp, mixed_field_peakon], implementation: planned_m21, trainable: false, adaptive_space: true, adaptive_time: true, frozen: true}
+  - {name: particle_dop853, category: classical, representation: periodic_measure, families: [single_periodic_peakon, separated_multipeakon, clustered_multipeakon], implementation: existing, trainable: false, adaptive_space: false, adaptive_time: true, frozen: true}
+  - {name: wang_yan_pinn, category: learned_baseline, representation: coordinate_network, families: [smooth_periodic, single_periodic_peakon], implementation: planned_m22, trainable: true, adaptive_space: false, adaptive_time: false, frozen: false}
+  - {name: fno, category: learned_baseline, representation: neural_operator, families: [smooth_periodic, smooth_to_sharp], implementation: planned_m22, trainable: true, adaptive_space: false, adaptive_time: false, frozen: false}
+  - {name: proposed_m13, category: proposed, representation: compatible_eulerian_particle_local_amr, families: [smooth_periodic, smooth_to_sharp, single_periodic_peakon, separated_multipeakon, clustered_multipeakon, mixed_field_peakon], implementation: proposed, trainable: true, adaptive_space: true, adaptive_time: true, frozen: true}
+
+families:
+  - name: smooth_periodic
+    sector: smooth
+    reference: reference_fourier_dop853
+    required_methods: [conservative_finite_difference, fourier_ifrk4, residual_space_time_amr, wang_yan_pinn, fno, proposed_m13]
+    required_metrics: [relative_l2, relative_h1, relative_linf, mass_drift, h1_drift, active_dof_time]
+  - name: smooth_to_sharp
+    sector: smooth_pre_singular
+    reference: reference_fourier_dop853
+    required_methods: [conservative_finite_difference, fourier_ifrk4, residual_space_time_amr, fno, proposed_m13]
+    required_metrics: [relative_l2, relative_h1, relative_linf, mass_drift, h1_drift, peak_position_error, active_dof_time]
+  - name: single_periodic_peakon
+    sector: atomic
+    reference: reference_particle_dop853
+    required_methods: [particle_dop853, wang_yan_pinn, proposed_m13]
+    required_metrics: [relative_h1, mass_drift, h1_drift, peak_position_error, active_dof_time]
+  - name: separated_multipeakon
+    sector: atomic
+    reference: reference_particle_dop853
+    required_methods: [particle_dop853, proposed_m13]
+    required_metrics: [relative_h1, mass_drift, h1_drift, peak_position_error, active_dof_time]
+  - name: clustered_multipeakon
+    sector: atomic_pre_collision
+    reference: reference_particle_dop853
+    required_methods: [particle_dop853, proposed_m13]
+    required_metrics: [relative_h1, mass_drift, h1_drift, peak_position_error, active_dof_time]
+  - name: mixed_field_peakon
+    sector: mixed
+    reference: reference_fourier_dop853
+    required_methods: [residual_space_time_amr, proposed_m13]
+    required_metrics: [relative_l2, relative_h1, mass_drift, h1_drift, peak_position_error, active_dof_time]
+
+metrics:
+  registered: [relative_l2, relative_h1, relative_linf, mass_drift, h1_drift, peak_position_error, active_dof_time, accepted_steps, runtime_seconds]
+  primary: [relative_h1, mass_drift, h1_drift, terminal_tolerance_coverage, active_dof_time]
+  efficiency_role: secondary_supporting_evidence
+
+statistics:
+  resampling_unit: trajectory_group
+  bootstrap_samples: 2000
+  confidence: 0.95
+  paired_effect: log10_error_ratio
+  family_stratified: true
+
+reference_contract:
+  visibility: posthoc_audit_only
+  smooth: overresolved_fourier_dop853
+  atomic: positive_periodic_particle_dop853
+  mixed: overresolved_fourier_particle_dop853
+  collision_guard: 1.0e-8
+  rtol: 1.0e-10
+  atol: 1.0e-12
+
+design:
+  development:
+    alphas: [1.0]
+    tolerances: [0.002, 0.0005]
+    final_times: [0.004, 0.008]
+    seeds_per_cell: 1
+    seed_base: 20000000
+  full:
+    alphas: [0.5, 1.0, 1.5]
+    tolerances: [0.002, 0.00075, 0.00025]
+    final_times: [0.008, 0.02]
+    seeds_per_cell: 3
+    seed_base: 21000000

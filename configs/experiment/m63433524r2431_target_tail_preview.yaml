@@ -1,0 +1,69 @@
+phase: M6.3.4.3.3.5.2.4-R2.4.3.1_target_tail_preview
+output_dir: results/m63433524r2431_target_tail_preview
+dataset_file: r2431_target_tail_preview_dataset.npz
+dataset_acceptance_file: dataset_acceptance.json
+next_phase: M6.3.4.3.3.5.2.4-R2.4.3.1_fixed_selection
+scope: >-
+  Fresh development-only candidate-then-frozen-R2.3 branches. A causal
+  four-step target-tail preview is generated from the same branch as labels;
+  no reference label appears in the network input and no gate/LTT is frozen.
+
+source_r243_output: results/m63433524r243_policy_reachability
+source_r243_dataset_file: r243_policy_reachability_dataset.npz
+source_r23_output: results/m63433524r23_counterfactual_contrast_repair
+source_scale_budget: results/m63433521_paired_scale_shadow/scale_error_budget.json
+source_m6333_acceptance: results/m6333_safe_learned_rollout/acceptance.json
+source_m6332_checkpoints: results/m6332_local_amr_operator
+source_m6341_checkpoints: results/m63431_deployment_risk_recalibration
+source_r23_training_seeds: [211, 239, 271]
+seeds: [11, 29, 47]
+
+dataset:
+  seed: 4456343524
+  length: 6.283185307179586
+  family: separated
+  points: 32
+  dt: 0.00005
+  maximum_horizon: 4
+  labelled_starts_per_trajectory: 8
+  groups_per_split: {train: 240, calibration: 120, selection: 240}
+  collector_policies: [candidate, fallback, alternating, burst]
+  burst_width: 2
+  burst_period: 5
+  geometry_bins: [balanced, skewed]
+  amplitude_ratio_threshold: 1.25
+  maximum_geometry_seed_attempts: 80
+
+proposal_model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+risk_model: {context_channels: 48, residual_channels: 7, context_hidden: 32, residual_hidden: 16, context_correction_bound: 1.0}
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+controller:
+  selected_weight: 0.0625
+  minimum_dt: 0.00005
+  maximum_dt: 0.0004
+  maximum_relative_energy_drift: 0.02
+  maximum_mass_drift: 1.0e-10
+  maximum_patch_migration_relative_h1: 0.02
+  maximum_patch_migration_to_step_increment: 0.1
+  proposal_reference_dt: 0.0002
+label:
+  minimum_direction_cosine: -0.05
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_energy_drift: 0.02
+  maximum_cfl: 0.45
+  maximum_patch_migration_to_step_increment: 0.1
+  exit_threshold: 1.0
+  severe_threshold: 2.0
+risk_head:
+  seeds: [400, 401, 402]
+  hidden_channels: 64
+  epochs: 320
+  ablation_epochs: 160
+  learning_rate: 0.0003
+  severity_weight: 0.1
+  upper_std_multiplier: 1.0
+  minimum_selection_auc: 0.86
+  minimum_worst_stratum_auc: 0.82
+  minimum_calibration_groups: 40
+  minimum_selection_groups: 104
+  minimum_selection_groups_per_geometry: 20

@@ -1,0 +1,55 @@
+phase: CMAME-M1.2
+output_dir: results/cmame_m12_conservative_adaptive_controller
+m11_output_dir: results/cmame_m11_mixed_error_estimator
+next_phase_on_pass: CMAME-M1.3_local_compatible_amr
+domain:
+  length: 6.283185307179586
+  gamma: 0.0
+development:
+  families: [smooth_control, pure_particle_control, mixed_separated, mixed_clustered]
+  alphas: [1.0]
+  tolerances: [0.0002, 0.00001]
+  seeds_per_cell: 1
+  seed_base: 10100000
+  initial_points: 64
+  initial_dt: 0.0005
+  final_time: 0.004
+full:
+  families: [smooth_control, pure_particle_control, mixed_separated, mixed_clustered]
+  alphas: [0.5, 1.0, 1.5]
+  tolerances: [0.0002, 0.00005, 0.00001]
+  seeds_per_cell: 2
+  seed_base: 11100000
+  initial_points: 64
+  initial_dt: 0.0005
+  final_time: 0.008
+nonlinear_solver:
+  tolerance: 1.0e-11
+  maximum_iterations: 80
+  damping: 1.0
+reference:
+  refinement: 4
+  rtol: 1.0e-10
+  atol: 1.0e-12
+  collision_tolerance: 1.0e-8
+controller:
+  time_fraction: 0.25
+  spatial_fraction: 0.75
+  dorfler_theta: 0.6
+  minimum_points: 32
+  maximum_points: 128
+  minimum_dt: 0.000125
+  maximum_dt: 0.001
+  time_safety: 0.9
+  time_growth_limit: 2.0
+  time_shrink_limit: 0.5
+  coarsen_ratio: 0.2
+  coarsen_hysteresis: 2
+  minimum_cells_per_separation: 2.0
+  maximum_relative_particle_cfl: 0.15
+acceptance:
+  maximum_invariant_drift: 1.0e-10
+  maximum_transfer_defect: 1.0e-10
+  minimum_median_capture: 0.35
+  minimum_monotone_fraction: 0.65
+  maximum_median_error_ratio_to_fixed_coarse: 1.01

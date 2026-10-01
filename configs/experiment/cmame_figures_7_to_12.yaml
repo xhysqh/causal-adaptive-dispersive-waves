@@ -1,0 +1,16 @@
+phase: CMAME-PAPER-FIGURES-7-12
+output_dir: results/cmame_stage2_pinn_comparison/paper_figures
+
+inputs:
+  acceptance: results/cmame_stage2_pinn_comparison/acceptance.json
+  mch: results/cmame_stage2_pinn_comparison/aligned_comparison_evidence_mch.npz
+  bo: results/cmame_stage2_pinn_comparison/aligned_comparison_evidence_bo.npz
+
+figure_numbers:
+  mch: 7
+  bo: 10
+
+scope: >-
+  Plot-only replay of accepted aligned mCH and Benjamin--Ono comparison
+  evidence. No model is trained, no field is regenerated, and every plotted
+  error is recomputed from the frozen reference and method fields.

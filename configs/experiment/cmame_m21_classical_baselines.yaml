@@ -1,0 +1,54 @@
+phase: CMAME-M2.1
+output_dir: results/cmame_m21_classical_baselines
+next_phase_on_pass: CMAME-M2.2_learned_baselines
+m20_output_dir: results/cmame_m20_frozen_benchmark_registry
+m20_config: configs/experiment/cmame_m20_frozen_benchmark_registry.yaml
+
+domain:
+  length: 6.283185307179586
+  gamma: 0.0
+
+development:
+  points: 16
+  uniform_dt: 0.0005
+  spectral_dt: 0.00025
+  reference_points: 24
+  reference_refinement: 2
+
+full:
+  points: 32
+  uniform_dt: 0.00025
+  spectral_dt: 0.000125
+  reference_points: 48
+  reference_refinement: 4
+
+reference:
+  rtol: 1.0e-10
+  atol: 1.0e-12
+  particle_rtol: 1.0e-12
+  particle_atol: 1.0e-14
+  collision_tolerance: 1.0e-8
+
+compatible_fd:
+  nonlinear_tolerance: 1.0e-11
+  maximum_iterations: 80
+
+residual_amr:
+  initial_dt: 0.0005
+  minimum_dt: 0.0000625
+  maximum_dt: 0.001
+  dorfler_theta: 0.65
+  maximum_patch_fraction: 0.75
+  halo_cells: 1
+  particle_halo_cells: 2
+  temporal_safety: 0.8
+  nonlinear_tolerance: 1.0e-11
+  maximum_iterations: 80
+
+acceptance:
+  maximum_conservative_mass_drift: 1.0e-9
+  maximum_conservative_h1_drift: 1.0e-9
+  maximum_particle_reference_position_error: 1.0e-6
+  maximum_baseline_relative_h1: 1.0
+  require_amr_patch_change: true
+  require_amr_time_adjustment: true

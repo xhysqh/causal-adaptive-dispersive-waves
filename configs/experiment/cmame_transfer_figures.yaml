@@ -1,0 +1,14 @@
+phase: CMAME-PAPER-TRANSFER-FIGURES
+output_dir: results/cmame_transfer_figures
+
+inputs:
+  f2_showcase: results/_analysis/cmame_f2_v3_full_20260830/results/cmame_f2_closed_loop_paper_evidence/full/closed_loop_showcase.npz
+  f2_ledger: results/_analysis/cmame_f2_v3_full_20260830/results/cmame_f2_closed_loop_paper_evidence/full/closed_loop_decisions.csv
+  kdv: results/cmame_kdv_u11_self_certifying/full/representative_trajectory.npz
+  ilw: results/cmame_u211_ilw_evidence_repair/full/representative_trajectories.npz
+  power_law: results/cmame_u201_unknown_wave_evidence_repair/full/representative_trajectories.npz
+
+selection:
+  f2_initial_points: 64
+  ilw_depth: 1.0
+  power_order: 2.6

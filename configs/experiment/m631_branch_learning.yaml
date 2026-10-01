@@ -1,0 +1,32 @@
+phase: M6.3.1_branch_training_and_error_learning
+source_m630_acceptance: results/m63_pmwno_foundation/acceptance.json
+seeds: [11, 29, 47]
+device: auto
+dataset:
+  seed: 6310
+  maximum_atoms: 8
+  points: 64
+  wavelet_levels: 2
+  richardson_tolerance: 1.0e-8
+  counts:
+    particle: {train: 64, validation: 24, audit: 24}
+    cluster: {train: 64, validation: 24, audit: 24}
+    field: {train: 32, validation: 12, audit: 12}
+model:
+  field_channels: 4
+  parameter_channels: 11
+  hidden: 24
+  wavelet_levels: 2
+training:
+  learning_rate: 0.003
+  particle_epochs: 150
+  cluster_epochs: 100
+  field_epochs: 70
+  error_epochs: 100
+acceptance:
+  maximum_branch_ratio_to_constant: 0.98
+  maximum_cross_grid_target_error: 0.25
+  minimum_spatial_observed_order: 1.5
+  minimum_target_variance: 1.0e-12
+  maximum_mass_tangent_error: 1.0e-6
+  minimum_seeds: 3

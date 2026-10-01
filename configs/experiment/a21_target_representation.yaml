@@ -1,0 +1,42 @@
+seed: 20260803
+source_dir: results/a21_reference_repair
+source_acceptance: results/a21_reference_repair/acceptance.json
+output_dir: results/a21_target_representation
+domain: {x_min: -10.0, length: 20.0}
+orders: {temporal_p: 2.0, spatial_q: 2.0}
+comparison: {points: 64, time_tolerance: 1.0e-11}
+candidates:
+  - {id: r1_common_21, kind: absolute, absolute_cutoff: 21, bandwidth_rank: 1}
+  - {id: r2_relative_two_thirds, kind: relative, fraction: 0.3333333333333333, bandwidth_rank: 2}
+  - {id: r3_near_full, kind: near_full, nyquist_margin: 2, bandwidth_rank: 3}
+  - {id: r4_full, kind: full, bandwidth_rank: 4}
+selection:
+  maximum_median_tail_fraction: 0.50
+  maximum_gaussian_closure_error: 0.10
+  maximum_nonsmooth_closure_error: 0.30
+  minimum_component_cosine: 0.80
+  maximum_scaled_design_condition: 100.0
+  minimum_richardson_improved_scenarios: 2
+  maximum_median_richardson_defect_ratio: 1.0
+  maximum_spurious_peak_increase: 1
+  maximum_median_energy_error_ratio: 1.0
+probe:
+  enabled: true
+  holdout: {points: 128, dt: 0.004}
+  seeds: [11, 22, 33]
+  epochs: 15
+  batch_size: 128
+  samples_per_trajectory_per_epoch: 256
+  learning_rate: 0.002
+  weight_decay: 1.0e-6
+  gradient_clip: 1.0
+  model:
+    hidden_channels: 24
+    blocks: 3
+    kernel_size: 5
+    normalization: group
+  acceptance:
+    maximum_mean_defect_ratio: 1.0
+    minimum_improved_families_per_seed: 2
+    maximum_seed_direction_failures: 0
+    require_finite: true

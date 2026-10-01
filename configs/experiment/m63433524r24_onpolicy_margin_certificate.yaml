@@ -1,0 +1,121 @@
+phase: M6.3.4.3.3.5.2.4-R2.4_true_onpolicy_reachable_margin_certificate
+output_dir: results/m63433524r24_onpolicy_margin_certificate
+source_r23_output: results/m63433524r23_counterfactual_contrast_repair
+source_scale_budget: results/m63433521_paired_scale_shadow/scale_error_budget.json
+source_m6333_acceptance: results/m6333_safe_learned_rollout/acceptance.json
+source_m63433524_dataset: results/m63433524_closed_loop_group_certificate/closed_loop_risk_samples.npz
+source_m6332_checkpoints: results/m6332_local_amr_operator
+source_m6341_checkpoints: results/m63431_deployment_risk_recalibration
+gate_source_dir: results/m63433524r23_counterfactual_contrast_repair
+gate_acceptance_file: selection_acceptance.json
+gate_calibration_file: selection_calibration.json
+gate_calibration_path: results/m63433524r23_counterfactual_contrast_repair/selection_calibration.json
+gate_dataset_file: development_risk_samples.npz
+gate_manifest_file: frozen_final_gate_manifest.json
+source_manifest_exempt_paths: [scripts/build_m63433524r2_fixed_gate_ltt.py]
+feature_schema: counterfactual_60
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+proposal_model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+risk_model: {context_channels: 48, residual_channels: 7, context_hidden: 32, residual_hidden: 16, context_correction_bound: 1.0}
+seeds: [11, 29, 47]
+controller:
+  selected_weight: 0.0625
+  minimum_dt: 0.00005
+  maximum_dt: 0.0004
+  maximum_relative_energy_drift: 0.02
+  maximum_mass_drift: 1.0e-10
+  maximum_patch_migration_relative_h1: 0.02
+  maximum_patch_migration_to_step_increment: 0.1
+  proposal_reference_dt: 0.0002
+training: {seeds: [211, 239, 271]}
+label:
+  minimum_direction_cosine: -0.05
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_energy_drift: 0.02
+  maximum_cfl: 0.45
+  maximum_patch_migration_to_step_increment: 0.1
+  exit_threshold: 1.0
+  severe_threshold: 2.0
+risk_control:
+  deployment_horizon: 1
+margin_fit:
+  knot_quantile: 0.75
+  threshold_quantile_min: 0.01
+  threshold_quantile_max: 0.95
+  threshold_quantile_step: 0.01
+  minimum_fit_accepted_groups_per_cell: 104
+acceptance:
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_energy_drift: 0.02
+onpolicy_stages:
+  margin_fit:
+    output_file: onpolicy_margin_fit_samples.npz
+    dataset_acceptance_file: margin_fit_dataset_acceptance.json
+    prior_dataset_paths:
+      - results/m63433524r23_counterfactual_contrast_repair/development_risk_samples.npz
+      - results/m63433524_closed_loop_group_certificate/closed_loop_risk_samples.npz
+    seed: 1156343524
+    length: 6.283185307179586
+    family: separated
+    points: [32, 64, 128]
+    dts: [0.00005, 0.0001, 0.0002]
+    maximum_horizon: 8
+    labelled_starts_per_trajectory: 8
+    groups_per_cell: 600
+    geometry_bins: [balanced, skewed]
+    amplitude_ratio_threshold: 1.25
+    maximum_geometry_seed_attempts: 80
+    next_phase: M6.3.4.3.3.5.2.4-R2.4_margin_fit
+  fixed_selection:
+    output_file: fixed_margin_selection_samples.npz
+    dataset_acceptance_file: fixed_margin_selection_dataset_acceptance.json
+    certificate_file: fixed_margin_selection_acceptance.json
+    prior_dataset_paths:
+      - results/m63433524r23_counterfactual_contrast_repair/development_risk_samples.npz
+      - results/m63433524_closed_loop_group_certificate/closed_loop_risk_samples.npz
+      - results/m63433524r24_onpolicy_margin_certificate/onpolicy_margin_fit_samples.npz
+    seed: 1256343524
+    length: 6.283185307179586
+    family: separated
+    points: [32, 64, 128]
+    dts: [0.00005, 0.0001, 0.0002]
+    maximum_horizon: 8
+    labelled_starts_per_trajectory: 8
+    groups_per_cell: 600
+    geometry_bins: [balanced, skewed]
+    amplitude_ratio_threshold: 1.25
+    maximum_geometry_seed_attempts: 80
+    policy_global_alpha: 0.02
+    learned_global_alpha: 0.02
+    policy_cell_alpha: 0.05
+    learned_cell_alpha: 0.05
+    cell_delta_total: 0.05
+    minimum_learned_groups_per_cell: 104
+    next_phase: M6.3.4.3.3.5.2.4-R2.4_frozen_external_ltt
+  final_ltt:
+    output_file: final_margin_ltt_samples.npz
+    dataset_acceptance_file: final_margin_ltt_dataset_acceptance.json
+    certificate_file: acceptance.json
+    prior_dataset_paths:
+      - results/m63433524r23_counterfactual_contrast_repair/development_risk_samples.npz
+      - results/m63433524_closed_loop_group_certificate/closed_loop_risk_samples.npz
+      - results/m63433524r24_onpolicy_margin_certificate/onpolicy_margin_fit_samples.npz
+      - results/m63433524r24_onpolicy_margin_certificate/fixed_margin_selection_samples.npz
+    seed: 1356343524
+    length: 6.283185307179586
+    family: separated
+    points: [32, 64, 128]
+    dts: [0.00005, 0.0001, 0.0002]
+    maximum_horizon: 8
+    labelled_starts_per_trajectory: 8
+    groups_per_cell: 600
+    geometry_bins: [balanced, skewed]
+    amplitude_ratio_threshold: 1.25
+    maximum_geometry_seed_attempts: 80
+    policy_global_alpha: 0.02
+    learned_global_alpha: 0.02
+    policy_cell_alpha: 0.05
+    learned_cell_alpha: 0.05
+    cell_delta_total: 0.05
+    minimum_learned_groups_per_cell: 104
+    next_phase: M6.3.4.3.3.5.2.5_frozen_external_closed_loop_v3

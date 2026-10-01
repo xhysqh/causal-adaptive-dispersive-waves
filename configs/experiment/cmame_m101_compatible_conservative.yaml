@@ -1,0 +1,40 @@
+phase: CMAME-M1.0.1
+output_dir: results/cmame_m101_compatible_conservative
+next_phase_on_pass: CMAME-M1.1_mixed_error_estimator
+domain:
+  length: 6.283185307179586
+  gamma: 0.0
+development:
+  families: [smooth_control, mixed_separated, mixed_clustered]
+  alphas: [0.8, 1.2]
+  seeds_per_family: 1
+  seed_base: 5100000
+  final_time: 0.008
+  time_grid: 64
+  time_dts: [0.001, 0.0005, 0.00025]
+  time_reference_dt: 0.0000625
+  correction_grids: [32, 64, 128]
+full:
+  families: [smooth_control, mixed_separated, mixed_clustered]
+  alphas: [0.5, 1.0, 1.5]
+  seeds_per_family: 3
+  seed_base: 6100000
+  final_time: 0.008
+  time_grid: 128
+  time_dts: [0.001, 0.0005, 0.00025, 0.000125]
+  time_reference_dt: 0.00003125
+  correction_grids: [32, 64, 128, 256]
+nonlinear_solver:
+  tolerance: 1.0e-11
+  maximum_iterations: 80
+  damping: 1.0
+acceptance:
+  minimum_compatible_time_order: 1.8
+  maximum_invariant_drift: 1.0e-10
+  maximum_tangent_defect: 1.0e-10
+  maximum_nonlinear_residual: 1.0e-10
+  maximum_iterations: 20
+  minimum_correction_decay_fraction: 0.66
+  maximum_finest_relative_correction: 0.02
+  maximum_true_error_ratio_to_raw: 2.0
+

@@ -1,0 +1,36 @@
+phase: M6.2_gpu_joint_physics_training
+source_m61_acceptance: results/m61_broad_closed_loop_regime/acceptance.json
+source_m4_acceptance: results/m4_mch_minimal_atlas/acceptance.json
+source_m3_dir: results/m3_mch_causal_dataset
+seeds: [11, 29, 47]
+device: cuda
+model: {hidden: 8}
+precision:
+  network_amp: true
+  physics_dtype: float64
+training:
+  epochs: 25
+  batch_size: 64
+  optimization_repeats: 8
+  validation_selection_interval: 5
+  learning_rate: 1.0e-4
+  gradient_clip: 1.0
+loss:
+  supervised_weight: 1.0
+  weak_weight: 1.0e-4
+  conservation_weight: 1.0e-2
+  multistep_weight: 0.1
+  multistep_horizons: [2, 3]
+benchmark:
+  batch_sizes: [16, 32, 64, 128]
+  warmup_steps: 5
+  measured_steps: 20
+acceptance:
+  cpu_gpu_relative_output_max: 2.0e-5
+  final_to_initial_loss_max: 1.05
+  minimum_examples_per_second: 1.0
+  minimum_peak_device_memory_bytes: 1
+  minimum_benchmark_points: 4
+  minimum_unique_train_samples: 20
+  minimum_unique_train_groups: 5
+  all_checkpoints_finite: true

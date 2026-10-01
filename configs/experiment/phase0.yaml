@@ -1,0 +1,57 @@
+seed: 20260720
+equation:
+  k1: 0.0
+  k2: 1.0
+  k: 1
+grid:
+  x_min: -10.0
+  length: 20.0
+  points: 128
+solver:
+  dt: 0.002
+  final_time: 0.1
+  energy_atol: 1.0e-14
+initial_condition:
+  kind: gaussian
+  amplitude: 1.0
+  center: -2.0
+  width: 1.2
+scenarios:
+  single_peakon:
+    kind: single_peakon
+    amplitude: 1.0
+    center: -3.0
+    width: 1.0
+  double_peakon:
+    kind: multi_peakon
+    amplitudes: [1.2, 0.5]
+    centers: [-1.0, 1.0]
+    width: 1.0
+verification:
+  space_points: [32, 64, 128]
+  space_reference_points: 256
+  space_dt: 0.0005
+  time_steps: [0.01, 0.005, 0.0025]
+  time_reference_dt: 0.000625
+  reference_method: DOP853
+  reference_rtol: 1.0e-10
+  reference_atol: 1.0e-12
+  peak_points: 128
+  peak_dt: 0.002
+  single_peak_final_time: 0.5
+  double_peak_final_time: 3.0
+  tail_radius: 1.0
+  high_frequency_fraction: 0.3333333333333333
+acceptance:
+  symmetry_atol: 1.0e-13
+  inverse_relative_tol: 5.0e-13
+  periodic_peakon_momentum_leakage_tol: 1.0e-3
+  energy_relative_tol: 1.0e-10
+  minimum_space_order: 1.5
+  minimum_time_order: 1.5
+  single_peak_max_amplitude_error: 0.05
+  single_peak_max_position_error: 0.2
+  double_peak_max_relative_h1_error: 0.1
+  double_peak_max_spurious_peaks: 0
+  require_finite: true
+output_dir: results/baseline_verification

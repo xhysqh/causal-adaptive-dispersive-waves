@@ -1,0 +1,60 @@
+phase: M6.3.4.3.3.5.2.3_frozen_external_closed_loop
+output_dir: results/m63433523_external_closed_loop
+next_phase: M6.3.4.3.3.5.3_dynamic_space_time_control
+scope: Independent separated periodic pre-collision closed-loop audit; fixed registered dt per trajectory.
+source_m63433522_acceptance: results/m63433522_scale_risk_recalibration/acceptance.json
+source_m63433522_calibration: results/m63433522_scale_risk_recalibration/calibration.json
+source_m63433522_checkpoints: results/m63433522_scale_risk_recalibration
+source_m63433522_dataset: results/m63433522_scale_risk_recalibration/scale_risk_samples.npz
+source_scale_budget: results/m63433521_paired_scale_shadow/scale_error_budget.json
+source_m6332_checkpoints: results/m6332_local_amr_operator
+source_m6341_checkpoints: results/m63431_deployment_risk_recalibration
+source_m6333_acceptance: results/m6333_safe_learned_rollout/acceptance.json
+frozen_sha256:
+  acceptance: A24A1DE5358C5195721A74E57B8CC5BDC13CC68BAE2C92C368747C588F750DB9
+  calibration: B9B0ED671AA17080C8AD54E16C377781798706999F64142709D2E10C7AAA2B8D
+  scale_budget: 254BD1E3F78228FDE6B696A9EF583B004169726F0926E2285D767B8BC01E9E7C
+  checkpoint_11: 5F33BF05ADB1DFC86941C674F805153A82E1C7ADABC26C4851CAA69D55F5948E
+  checkpoint_29: 1E29295E0346A36B2919D0470DE66C886A9ACDB0FD37C3C4EC2FF18381C000A3
+  checkpoint_47: E83C9FD5C2BB44FEF0062F95D93669414405E808E4BC846872D8AC7A6DC08E08
+seeds: [11, 29, 47]
+proposal_model: {feature_channels: 11, parameter_channels: 6, hidden: 24}
+risk_model: {context_channels: 48, residual_channels: 7, context_hidden: 32, residual_hidden: 16, context_correction_bound: 1.0}
+refinement: {theta: 0.6, maximum_fraction: 0.4, halo_cells: 1, maximum_cfl: 0.45}
+controller:
+  selected_weight: 0.0625
+  minimum_dt: 0.00005
+  maximum_dt: 0.0004
+  maximum_relative_energy_drift: 0.02
+  maximum_mass_drift: 1.0e-10
+  maximum_patch_migration_relative_h1: 0.02
+  maximum_patch_migration_to_step_increment: 0.1
+  proposal_reference_dt: 0.0002
+label:
+  minimum_direction_cosine: -0.05
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_energy_drift: 0.02
+  maximum_cfl: 0.45
+  maximum_patch_migration_to_step_increment: 0.1
+  exit_threshold: 1.0
+audit:
+  seed: 226343523
+  length: 6.283185307179586
+  family: separated
+  points: [32, 64, 128]
+  dts: [0.00005, 0.0001, 0.0002]
+  groups_per_cell: 30
+  steps: 8
+risk_certificate:
+  global_alpha: 0.02
+  global_delta: 0.05
+  cell_alpha: 0.20
+  cell_delta_total: 0.05
+acceptance:
+  minimum_trajectories: 270
+  minimum_steps: 2160
+  minimum_learned_steps: 9
+  minimum_learned_steps_per_cell: 1
+  maximum_unsafe_learned_acceptances: 0
+  maximum_mass_drift: 1.0e-10
+  maximum_relative_energy_drift: 0.02

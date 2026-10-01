@@ -1,0 +1,54 @@
+phase: CMAME-F2-MCH-FOUR-PEAK-SHOWCASE
+output_dir: results/cmame_f2_mch_four_peak_showcase
+f1_output_dir: results/cmame_f101_metric_repair
+f1_config: configs/experiment/cmame_f101_metric_repair.yaml
+
+domain: {length: 6.283185307179586}
+showcase:
+  # Geometry-only pre-registration: seed 2 gives exactly four clustered
+  # peakons.  The seed was fixed without inspecting a PINN error or a
+  # reference-solution outcome.
+  modified_camassa_holm:
+    family: mixed_clustered
+    seed: 2
+  benjamin_ono:
+    family: two_lorentzian
+    seed: 91512003
+
+development:
+  decisions: 2
+  points: 32
+  maximum_points: 64
+  dt: 0.0005
+  tolerance: 0.002
+  visualization_points: 96
+  reference_refinement: 2
+  maximum_bo_invariant_drift: 2.0e-4
+full:
+  decisions: 32
+  points: 64
+  maximum_points: 256
+  dt: 0.0005
+  tolerance: 0.001
+  visualization_points: 256
+  reference_refinement: 4
+  maximum_bo_invariant_drift: 2.0e-5
+
+nonlinear_solver: {tolerance: 1.0e-11, maximum_iterations: 80, damping: 1.0}
+reference: {rtol: 1.0e-10, atol: 1.0e-12, collision_tolerance: 1.0e-8}
+calibration: {reserve_fraction: 0.10}
+figures:
+  minimum_publication_decisions: 32
+  mch_indicator_dorfler_theta: 0.60
+learning_evidence:
+  checkpoint_fractions: [0.0, 0.10, 0.50, 1.0]
+acceptance:
+  maximum_mch_invariant_drift: 1.0e-10
+  maximum_bo_invariant_drift: 2.0e-5
+  maximum_terminal_relative_h1: 1.0
+
+scope: >-
+  Geometry-only pre-registered four-peakon clustered mCH showcase for the
+  Stage-2 direct PINN comparison. The controller and thresholds are frozen;
+  reference construction remains posthoc. The accompanying BO fields are
+  retained solely because the common F2 evidence runner audits both equations.

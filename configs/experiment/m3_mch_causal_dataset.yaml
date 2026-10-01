@@ -1,0 +1,43 @@
+phase: M3_mch_causal_atlas_dataset
+seed: 20260805
+source_m2_acceptance: results/m2_mch_atlas/acceptance.json
+detector_config: configs/experiment/m2_mch_atlas.yaml
+time:
+  final_time: 0.02
+  output_dt: 0.01
+storage:
+  maximum_atoms: 8
+  maximum_clusters: 8
+cluster_position_audit:
+  relative_eigenvalue_floor: 1.0e-10
+  condition_maximum: 1.0e+8
+scenarios:
+  - {name: particle_single_train, family: particle, split: train, length: 6.283185307179586, alpha: 0.7, gamma: 0.0, output_dt: 0.005, grids: [63, 127], positions: [0.8], amplitudes: [1.0]}
+  - {name: particle_triple_train, family: particle, split: train, length: 6.283185307179586, alpha: 1.0, gamma: 0.0, grids: [63, 127], positions: [0.7, 2.5, 5.1], amplitudes: [1.0, 0.7, 0.45]}
+  - {name: particle_cluster_train, family: particle, split: train, length: 6.283185307179586, alpha: 1.1, gamma: 0.0, output_dt: 0.005, grids: [255], positions: [1.0, 1.1231997119], amplitudes: [1.0, 0.8]}
+  - {name: particle_cluster_train_l7, family: particle, split: train, length: 7.0, alpha: 0.8, gamma: 0.0, output_dt: 0.005, grids: [255], positions: [1.4, 1.5372549020], amplitudes: [0.85, 0.55]}
+  - {name: particle_cluster_train_l9, family: particle, split: train, length: 9.0, alpha: 1.4, gamma: 0.0, output_dt: 0.005, grids: [255], positions: [2.2, 2.3764705882], amplitudes: [1.2, 0.7]}
+  - {name: smooth_sine_train, family: smooth, split: train, length: 6.283185307179586, alpha: 0.8, gamma: 0.15, grids: [64, 128], profile: sine}
+  - {name: smooth_cosine_train, family: smooth, split: train, length: 8.0, alpha: 1.1, gamma: 0.05, grids: [64, 128], profile: cosine}
+  - {name: smooth_random_train, family: smooth, split: train, length: 7.0, alpha: 1.25, gamma: 0.2, grids: [96, 192], profile: random_fourier}
+  - {name: mixed_double_train, family: regularized_mixed, split: train, length: 7.0, alpha: 1.15, gamma: 0.08, output_dt: 0.005, grids: [63, 127], positions: [1.5, 5.2], amplitudes: [0.9, 0.45], profile: cosine}
+  - {name: particle_double_validation, family: particle, split: validation, length: 8.0, alpha: 1.3, gamma: 0.0, grids: [63, 127], positions: [1.1, 5.3], amplitudes: [1.1, 0.6]}
+  - {name: particle_cluster_validation, family: particle, split: validation, length: 8.0, alpha: 0.95, gamma: 0.0, output_dt: 0.005, grids: [255], positions: [1.0, 1.1568627451], amplitudes: [0.9, 0.65]}
+  - {name: mixed_validation, family: regularized_mixed, split: validation, length: 6.283185307179586, alpha: 1.0, gamma: 0.1, output_dt: 0.005, grids: [63, 127], positions: [1.2, 4.6], amplitudes: [0.8, 0.5], profile: sine}
+  - {name: particle_four_ood, family: particle, split: test_ood, length: 10.0, alpha: 0.9, gamma: 0.0, grids: [63, 127], positions: [0.8, 3.0, 5.8, 8.4], amplitudes: [1.0, 0.8, 0.6, 0.4]}
+  - {name: particle_cluster_ood, family: particle, split: test_ood, length: 10.0, alpha: 1.25, gamma: 0.0, output_dt: 0.005, grids: [255], positions: [2.0, 2.1960784314], amplitudes: [1.1, 0.55]}
+  - {name: signed_regularized_ood, family: regularized_mixed, split: test_ood, length: 6.283185307179586, alpha: 1.2, gamma: 0.05, output_dt: 0.005, grids: [63, 127], positions: [1.0, 4.2], amplitudes: [0.8, -0.35], profile: cosine}
+  - {name: smooth_random_ood, family: smooth, split: test_ood, length: 9.0, alpha: 1.4, gamma: 0.2, grids: [96, 192], profile: random_fourier}
+acceptance:
+  reconstruction_error_max: 1.0e-10
+  detection_position_error_max: 1.0e-5
+  cross_grid_position_error_max: 1.0e-5
+  cross_grid_position_target_max: 5.0e-2
+  reference_floor_relative_max: 1.0e-5
+  target_to_floor_min: 100.0
+  minimum_scenarios: 16
+  minimum_samples: 45
+  cluster_whitening_reconstruction_max: 1.0e-10
+  cluster_position_signal_to_floor_min: 100.0
+  cluster_position_energy_fraction_min: 1.0e-6
+  minimum_identifiable_cluster_samples_per_split: 4

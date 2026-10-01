@@ -1,0 +1,50 @@
+seed: 20260804
+source_dir: results/a21_target_representation/candidates/r4_full
+source_acceptance: results/a21_causal_scale_selection/acceptance.json
+output_dir: results/a22_sequential_safe_rollout_r1
+domain: {x_min: -10.0, length: 20.0}
+orders: {spatial: 2.0, temporal: 2.0}
+causal_scale: {formula: dt_residual_negative_norm, epsilon: 1.0e-12}
+folds:
+  - {id: holdout_n128_dt004, points: 128, dt: 0.004}
+  - {id: holdout_n64_dt001, points: 64, dt: 0.001}
+  - {id: holdout_n128_dt002, points: 128, dt: 0.002}
+training:
+  seeds: [11, 22, 33]
+  spatial_epochs: 8
+  residual_epochs: 8
+  joint_epochs: 4
+  batch_size: 128
+  samples_per_trajectory_per_epoch: 192
+  learning_rate: 0.002
+  joint_learning_rate: 0.0002
+  weight_decay: 1.0e-6
+  gradient_clip: 1.0
+  component_anchor_weight: 0.1
+model:
+  hidden_channels: 24
+  blocks: 3
+  kernel_size: 5
+  normalization: group
+trust:
+  rho: 0.25
+  backtracking: [1.0, 0.5, 0.25, 0.125]
+  residual_factor: 1.05
+  correction_rate_allowance: 1.05
+  spectral_tail_fraction: 0.25
+  spectral_tail_factor: 1.5
+  maximum_new_peaks: 0
+  feature_ood_quantile: 0.999
+  feature_ood_multiplier: 1.5
+acceptance:
+  maximum_label_reconstruction_error: 1.0e-10
+  minimum_spatial_cross_grid_cosine: 0.0
+  maximum_fold_seed_one_step_ratio: 1.0
+  maximum_rollout_mean_ratio: 1.05
+  maximum_rollout_worst_ratio: 1.5
+  minimum_strict_rollout_families_per_fold_seed: 1
+  strict_rollout_ratio: 0.995
+  maximum_energy_drift: 1.0e-10
+  maximum_spurious_peak_increase: 1
+  maximum_rejection_rate: 0.99
+

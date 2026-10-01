@@ -1,0 +1,25 @@
+phase: CMAME-E2
+next_phase_on_pass: CMAME-E3_paper_benchmark
+e1_config: configs/experiment/cmame_e1_tensorized_engine.yaml
+p3_config: configs/experiment/cmame_p3_space_time_adaptivity.yaml
+p4_development_acceptance: results/cmame_p4_benchmark_matrix/development/acceptance.json
+p4_full_acceptance: results/cmame_p4_benchmark_matrix/full/acceptance.json
+e1_development_acceptance: results/cmame_e1_tensorized_engine/development/acceptance.json
+e1_full_acceptance: results/cmame_e1_tensorized_engine/full/acceptance.json
+output_dir: results/cmame_e2_equal_route_benchmark
+audit:
+  grids: [32, 64]
+  families: [mixed_separated, mixed_clustered]
+  seeds_per_family: 2
+  seed_base: 1800000
+  alpha_range: [0.7, 1.3]
+  initial_dt: 1.0e-4
+  steps: 4
+timing: {warmup: 1, repeats: 3}
+acceptance:
+  maximum_primitive_relative_l2: 2.0e-8
+  maximum_terminal_relative_h1: 2.0e-5
+  maximum_composite_mass_drift: 1.0e-10
+  maximum_composite_relative_h1_drift: 5.0e-2
+  minimum_cuda_cohort_speedup_over_e1: 2.40
+  minimum_projected_matched_accuracy_speedup: 1.05

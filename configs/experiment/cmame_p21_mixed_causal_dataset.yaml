@@ -1,0 +1,39 @@
+phase: CMAME-P2.1
+next_phase_on_pass: CMAME-P2.2_conservative_interface_operator
+p20_acceptance: results/cmame_p2_cross_representation/acceptance.json
+p1_config: configs/experiment/cmame_p1_gpu_scale_revalidation.yaml
+p1_output_dir: results/cmame_p1_gpu_scale_revalidation
+output_dir: results/cmame_p21_mixed_causal_dataset
+domain:
+  length: 6.283185307179586
+dataset:
+  grids: [32, 64, 128]
+  dt: 1.0e-4
+  groups_per_family: {train: 12, validation: 4, audit: 4}
+  split_seeds: {train: 121000, validation: 221000, audit: 321000}
+  families: [smooth_control, pure_particle_control, mixed_separated, mixed_clustered]
+  alpha_range: [0.6, 1.4]
+  master_refinement: 4
+  shadow_refinement: 8
+  master_rtol: 1.0e-9
+  master_atol: 1.0e-11
+  shadow_rtol: 1.0e-11
+  shadow_atol: 1.0e-13
+  collision_tolerance: 1.0e-6
+audit:
+  ridge_values: [1.0e-6, 1.0e-4, 1.0e-2, 1.0]
+  interface_threshold: 0.25
+  convolution_probe:
+    seeds: [17, 31, 53]
+    hidden: 32
+    epochs: 400
+    learning_rate: 0.003
+    weight_decay: 1.0e-6
+acceptance:
+  maximum_flux_inversion_defect: 1.0e-9
+  maximum_pure_particle_label_rms: 1.0e-10
+  minimum_mixed_reference_snr: 4.0
+  minimum_cross_grid_correlation: 0.50
+  maximum_probe_ratio_to_zero: 0.90
+  minimum_family_probe_gain: 0.02
+  minimum_local_support_capture: 0.80
